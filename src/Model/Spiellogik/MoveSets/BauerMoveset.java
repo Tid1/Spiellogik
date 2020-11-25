@@ -14,6 +14,7 @@ public class BauerMoveset implements iMoveSet{
     boolean hasMoved = false;
     Color pieceColor;
     boolean test = false;
+    private final int BOUNDS = 8;
 
     public BauerMoveset(Color color){
         this.pieceColor = color;
@@ -28,10 +29,14 @@ public class BauerMoveset implements iMoveSet{
         List<Position> validPositions = new ArrayList<>();
         if(this.pieceColor == Color.Black){
             if (this.firstMove()){
-                validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()-2));
-                hasMoved = false;
+                if (currentPosition.getY()-2 > 0 && currentPosition.getY()-2 < BOUNDS){
+                    validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()-2));
+                    hasMoved = false;
+                }
             }
-            validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()-1));
+            if (currentPosition.getY()-1 > 0 && currentPosition.getY()-1 < BOUNDS){
+                validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()-1));
+            }
         }
         return validPositions;
     }
@@ -40,10 +45,14 @@ public class BauerMoveset implements iMoveSet{
         List<Position> validPositions = new ArrayList<>();
         if (this.pieceColor == Color.White){
             if (this.firstMove()){
-                validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()+2));
-                hasMoved = false;
+                if (currentPosition.getY()+2 > 0 && currentPosition.getY()+2 < BOUNDS){
+                    validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()+2));
+                    hasMoved = false;
+                }
             }
-            validPositions.add(new Position((currentPosition.getX()), currentPosition.getY()+1));
+            if (currentPosition.getY()+1 > 0 && currentPosition.getY()+1 < BOUNDS){
+                validPositions.add(new Position((currentPosition.getX()), currentPosition.getY()+1));
+            }
         }
         return validPositions;
     }

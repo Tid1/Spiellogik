@@ -8,10 +8,11 @@ import java.util.List;
 public interface iMoveSet {
     /**
      * Gibt an auf welche Position sich eine gegebene Figur von ihrer jetzigen Position bewegen darf
-     * @param piece Figur, dessen Aktionen überprüft werden sollen
+     * @param position Figur, dessen Aktionen überprüft werden sollen
      * @return Ein Array aller Positionen auf denen sich die Figur befinden könnte
      */
     List<Position> moveSet(Position position);
+
 
     //TODO macht das Sinn eine Figur mitzugeben? Kann das zu circular dependency führen?
     //TODO maybe geb ich nichts mit weil ich jeder Figur ein individuelles Moveset gebe und bei speziellen Sachen kann ich dann den Figurtypen ansprechen
