@@ -13,6 +13,7 @@ import java.util.List;
 public class BauerMoveset implements iMoveSet{
     boolean hasMoved = false;
     Color pieceColor;
+    boolean test = false;
 
     public BauerMoveset(Color color){
         this.pieceColor = color;
