@@ -1,6 +1,7 @@
 package Model.Spiellogik.Figuren;
 
 import Model.Spiellogik.Color;
+import Model.Spiellogik.MoveSets.TurmMoveset;
 import Model.Spiellogik.MoveSets.iMoveSet;
 
 public class Turm implements iPiece{
@@ -46,6 +47,6 @@ public class Turm implements iPiece{
 
     @Override
     public iMoveSet getMoveset() {
-        return null;
+        return new TurmMoveset(COLOR);
     }
 }

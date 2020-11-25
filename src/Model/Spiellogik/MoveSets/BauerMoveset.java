@@ -13,7 +13,8 @@ public class BauerMoveset implements iMoveSet{
     boolean hasMoved = false;
     Color pieceColor;
     boolean test = false;
-    private final int BOUNDS = 8;
+    private final int UPPER_BOUNDS = 8;
+    private final int LOWER_BOUNDS = 0;
 
     public BauerMoveset(Color color){
         this.pieceColor = color;
@@ -39,12 +40,12 @@ public class BauerMoveset implements iMoveSet{
         List<Position> validPositions = new LinkedList<>();
         if(this.pieceColor == Color.Black){
             if (this.firstMove()){
-                if (currentPosition.getY()-2 > 0 && currentPosition.getY()-2 < BOUNDS){
+                if (currentPosition.getY()-2 >= LOWER_BOUNDS && currentPosition.getY()-2 < UPPER_BOUNDS){
                     validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()-2));
                     hasMoved = false;
                 }
             }
-            if (currentPosition.getY()-1 > 0 && currentPosition.getY()-1 < BOUNDS){
+            if (currentPosition.getY()-1 >= LOWER_BOUNDS && currentPosition.getY()-1 < UPPER_BOUNDS){
                 validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()-1));
             }
         }
@@ -55,12 +56,12 @@ public class BauerMoveset implements iMoveSet{
         List<Position> validPositions = new LinkedList<>();
         if (this.pieceColor == Color.White){
             if (this.firstMove()){
-                if (currentPosition.getY()+2 > 0 && currentPosition.getY()+2 < BOUNDS){
+                if (currentPosition.getY()+2 >= LOWER_BOUNDS && currentPosition.getY()+2 < UPPER_BOUNDS){
                     validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()+2));
                     hasMoved = false;
                 }
             }
-            if (currentPosition.getY()+1 > 0 && currentPosition.getY()+1 < BOUNDS){
+            if (currentPosition.getY()+1 >= LOWER_BOUNDS && currentPosition.getY()+1 < UPPER_BOUNDS){
                 validPositions.add(new Position((currentPosition.getX()), currentPosition.getY()+1));
             }
         }

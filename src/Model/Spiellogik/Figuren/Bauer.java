@@ -1,6 +1,7 @@
 package Model.Spiellogik.Figuren;
 
 import Model.Spiellogik.Color;
+import Model.Spiellogik.MoveSets.BauerMoveset;
 import Model.Spiellogik.MoveSets.iMoveSet;
 
 public class Bauer implements iPiece{
@@ -45,6 +46,6 @@ public class Bauer implements iPiece{
 
     @Override
     public iMoveSet getMoveset() {
-        return null;
+        return new BauerMoveset(COLOR);
     }
 }
