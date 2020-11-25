@@ -6,6 +6,7 @@ import Model.Spiellogik.Figuren.Position;
 import Model.Spiellogik.Figuren.iPiece;
 import javafx.geometry.Pos;
 
+import javax.print.DocFlavor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +23,28 @@ public class BauerMoveset implements iMoveSet{
         return null;
     }
 
-    public List<Position> move(Position currentPosition){
+    private List<Position> moveBlack(Position currentPosition){
         List<Position> validPositions = new ArrayList<>();
-        if (this.firstMove()){
-           //TODO welche Dimension bei first move? new Position(x+2, y) oder new Position(x, y+2)?
+        if(this.pieceColor == Color.Black){
+            if (this.firstMove()){
+                validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()-2));
+                hasMoved = false;
+            }
+            validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()-1));
         }
+        return validPositions;
+    }
+
+    private List<Position> moveWhite(Position currentPosition){
+        List<Position> validPositions = new ArrayList<>();
+        if (this.pieceColor == Color.White){
+            if (this.firstMove()){
+                validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()+2));
+                hasMoved = false;
+            }
+            validPositions.add(new Position((currentPosition.getX()), currentPosition.getY()+1));
+        }
+        return validPositions;
     }
 
     public boolean firstMove(){
