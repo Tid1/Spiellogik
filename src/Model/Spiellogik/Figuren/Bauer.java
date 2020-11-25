@@ -8,6 +8,7 @@ public class Bauer implements iPiece{
     private final Typ TYP = Typ.BAUER;
     private Position position;
     private boolean captured = false;
+    private boolean test = false;
 
     public Bauer(Color color){
         this.COLOR = color;
