@@ -1,13 +1,12 @@
 package Model.Spiellogik.MoveSets;
 
 import Model.Spiellogik.Color;
-import Model.Spiellogik.Figuren.Bauer;
-import Model.Spiellogik.Figuren.Position;
-import Model.Spiellogik.Figuren.iPiece;
-import javafx.geometry.Pos;
 
-import javax.print.DocFlavor;
+import Model.Spiellogik.Figuren.Position;
+import sun.awt.image.ImageWatched;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class BauerMoveset implements iMoveSet{
@@ -22,11 +21,22 @@ public class BauerMoveset implements iMoveSet{
 
     @Override
     public List<Position> moveSet(Position position) {
-        return null;
+        List<Position> validPostitions = new LinkedList<>();
+        switch (pieceColor){
+            case White:
+                validPostitions = moveWhite(position);
+                break;
+            case Black:
+                validPostitions = moveBlack(position);
+                break;
+            default:
+                break;
+        }
+        return validPostitions;
     }
 
     private List<Position> moveBlack(Position currentPosition){
-        List<Position> validPositions = new ArrayList<>();
+        List<Position> validPositions = new LinkedList<>();
         if(this.pieceColor == Color.Black){
             if (this.firstMove()){
                 if (currentPosition.getY()-2 > 0 && currentPosition.getY()-2 < BOUNDS){
@@ -42,7 +52,7 @@ public class BauerMoveset implements iMoveSet{
     }
 
     private List<Position> moveWhite(Position currentPosition){
-        List<Position> validPositions = new ArrayList<>();
+        List<Position> validPositions = new LinkedList<>();
         if (this.pieceColor == Color.White){
             if (this.firstMove()){
                 if (currentPosition.getY()+2 > 0 && currentPosition.getY()+2 < BOUNDS){
