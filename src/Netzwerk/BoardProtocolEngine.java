@@ -42,7 +42,7 @@ public class BoardProtocolEngine implements iBoard {
         this.bais = bais;
     }
 
-    private void deserialize(){
+    private void deserialize() throws GameException, StatusException{
         DataInputStream dais = new DataInputStream(bais);
         try {
             int method = dais.readInt();
@@ -68,8 +68,9 @@ public class BoardProtocolEngine implements iBoard {
                 default:
                     throw new GameException("Could't find Method");
             }
-        } catch (IOException | GameException e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            //TODO idk irgendwas als filler maybe?
+            //TODO Nachfragen ob das nen Grund hat weshalb die exceptions weiter geworfen werden
         }
     }
 
@@ -86,7 +87,32 @@ public class BoardProtocolEngine implements iBoard {
 
     @Override
     public void move(iPiece piece, int x, int y) throws GameException, StatusException {
+        baos.reset();
+        DataOutputStream daos = new DataOutputStream(baos);
+        try {
+            daos.writeInt(piece.getPosition().getX());
+            daos.writeInt(piece.getPosition().getY());
+            daos.writeInt(x);
+            daos.writeInt(y);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void deserializeMove() throws GameException, StatusException {
+        DataInputStream dais = new DataInputStream(bais);
+        try {
+            int currentPosX = dais.readInt();
+            int currentPosY = dais.readInt();
+            iPiece piece = board.onField(currentPosX, currentPosY);
+
+            int changedPosX = dais.readInt();
+            int changedPosY = dais.readInt();
+
+            board.move(piece, changedPosX, changedPosY);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -151,9 +177,9 @@ public class BoardProtocolEngine implements iBoard {
                    throw new GameException("Couldn't find Color: " + color);
            }
 
-           iPlayer player = new PlayerImpl(color, playerName);
-        } catch (IOException | GameException io){
-
+           board.pickColor(playerName, color);
+        } catch (IOException | GameException | StatusException io){
+            io.printStackTrace();
         }
     }
 
