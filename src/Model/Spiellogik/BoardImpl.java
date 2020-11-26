@@ -134,7 +134,7 @@ public class BoardImpl implements iBoard{
     }
 
     @Override
-    public void changeTurns() throws StatusException {
+    private void changeTurns() throws StatusException {
         if (this.status != Status.TURN_BLACK && this.status != Status.TURN_WHITE){
             throw new StatusException("Cant Swap turns");
         }

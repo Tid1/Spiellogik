@@ -55,7 +55,6 @@ public interface iBoard {
      */
     boolean checkValidMove(iPiece piece, int x, int y) throws GameException;
 
-    boolean pickColor(String playerName, Color color) throws StatusException;
+    boolean pickColor(String playerName, Color color) throws StatusException, GameException;
 
-    void changeTurns() throws StatusException;
 }
