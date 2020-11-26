@@ -138,17 +138,44 @@ public class GameEngineTests {
     }
 
     @Test
+    void bauerMoveFehler() throws GameException, StatusException {
+        iBoard board = null;
+        iPiece bauer = null;
+
+        bauer.setPosition(4, 5);
+
+        assertThrows(GameException.class, () ->{
+           board.move(bauer, 5, 7);
+        });
+    }
+
+    @Test
+    void bauerMoveBackwards(){
+        iBoard board = null;
+        iPiece bauer = null;
+
+        bauer.setPosition(4, 5);
+
+        assertThrows(GameException.class,() ->{
+            board.move(bauer,3, 5);
+        });
+    }
+
+    @Test
     void pieceOutOfBounds() throws GameException, StatusException {
         iBoard board = null;
         iPiece piece = null;
 
         piece.setPosition(7, 5);
-        board.move(piece, 8, 5);
 
-        Position expectedPosition = new Position(7, 5);
+        assertThrows(GameException.class, () ->{
+            board.move(piece, 8, 5);
+        });
 
+      /*  Position expectedPosition = new Position(7, 5);
         assertEquals(piece.getPosition().getX(), expectedPosition.getX());
-        assertEquals(piece.getPosition().getY(), expectedPosition.getY());
+        assertEquals(piece.getPosition().getY(), expectedPosition.getY());*/
 
     }
+
 }
