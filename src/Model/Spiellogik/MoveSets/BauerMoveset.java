@@ -16,6 +16,9 @@ public class BauerMoveset implements iMoveSet{
     private final int UPPER_BOUNDS = 8;
     private final int LOWER_BOUNDS = 0;
 
+    private final int SINGLE_MOVE = 1;
+    private final int DOUBLE_MOVE = 2;
+
     public BauerMoveset(Color color){
         this.pieceColor = color;
     }
@@ -40,13 +43,13 @@ public class BauerMoveset implements iMoveSet{
         List<Position> validPositions = new LinkedList<>();
         if(this.pieceColor == Color.Black){
             if (this.firstMove()){
-                if (currentPosition.getY()-2 >= LOWER_BOUNDS && currentPosition.getY()-2 < UPPER_BOUNDS){
-                    validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()-2));
+                if (currentPosition.getY()-DOUBLE_MOVE >= LOWER_BOUNDS && currentPosition.getY()-DOUBLE_MOVE < UPPER_BOUNDS){
+                    validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()-DOUBLE_MOVE));
                     hasMoved = false;
                 }
             }
-            if (currentPosition.getY()-1 >= LOWER_BOUNDS && currentPosition.getY()-1 < UPPER_BOUNDS){
-                validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()-1));
+            if (currentPosition.getY()-SINGLE_MOVE >= LOWER_BOUNDS && currentPosition.getY()-SINGLE_MOVE < UPPER_BOUNDS){
+                validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()-SINGLE_MOVE));
             }
         }
         return validPositions;
@@ -56,13 +59,13 @@ public class BauerMoveset implements iMoveSet{
         List<Position> validPositions = new LinkedList<>();
         if (this.pieceColor == Color.White){
             if (this.firstMove()){
-                if (currentPosition.getY()+2 >= LOWER_BOUNDS && currentPosition.getY()+2 < UPPER_BOUNDS){
-                    validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()+2));
+                if (currentPosition.getY()+DOUBLE_MOVE >= LOWER_BOUNDS && currentPosition.getY()+DOUBLE_MOVE < UPPER_BOUNDS){
+                    validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()+DOUBLE_MOVE));
                     hasMoved = false;
                 }
             }
-            if (currentPosition.getY()+1 >= LOWER_BOUNDS && currentPosition.getY()+1 < UPPER_BOUNDS){
-                validPositions.add(new Position((currentPosition.getX()), currentPosition.getY()+1));
+            if (currentPosition.getY()+SINGLE_MOVE >= LOWER_BOUNDS && currentPosition.getY()+SINGLE_MOVE < UPPER_BOUNDS){
+                validPositions.add(new Position((currentPosition.getX()), currentPosition.getY()+SINGLE_MOVE));
             }
         }
         return validPositions;

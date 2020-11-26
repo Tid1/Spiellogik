@@ -7,7 +7,7 @@ public interface iPiece {
     Color getColor();
     Typ getType();
     Position getPosition();
-    void setPosition(Position position);
+    void setPosition(int x, int y);
     boolean isCaptured();
     void setCaputred(boolean caputred);
     iMoveSet getMoveset();

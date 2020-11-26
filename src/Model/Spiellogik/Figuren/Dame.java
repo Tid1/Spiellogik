@@ -29,8 +29,8 @@ public class Dame implements iPiece{
     }
 
     @Override
-    public void setPosition(Position position) {
-        this.position = position;
+    public void setPosition(int x, int y) {
+        this.position = new Position(x, y);
     }
 
     @Override

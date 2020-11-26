@@ -59,7 +59,7 @@ public class BoardImpl implements iBoard{
                 pieceOnField.setCaputred(true);
             }
             changeTurns();
-            piece.setPosition(new Position(x, y));
+            piece.setPosition(x, y);
         }
         throw new GameException("Illegal Move");
     }

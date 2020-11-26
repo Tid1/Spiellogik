@@ -12,7 +12,7 @@ import Model.Spiellogik.iPlayer;
 import javax.xml.crypto.Data;
 import java.io.*;
 
-public class BoardSender implements iBoard {
+public class BoardProtocolEngine implements iBoard {
     private iBoard board;
     private ByteArrayOutputStream baos;
     private ByteArrayInputStream bais;
@@ -36,7 +36,7 @@ public class BoardSender implements iBoard {
 
 
 
-    public BoardSender(iBoard board, ByteArrayOutputStream baos, ByteArrayInputStream bais){
+    public BoardProtocolEngine(iBoard board, ByteArrayOutputStream baos, ByteArrayInputStream bais){
         this.board = board;
         this.baos = baos;
         this.bais = bais;
