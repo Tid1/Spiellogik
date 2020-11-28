@@ -35,6 +35,11 @@ public class Bauer implements iPiece{
     }
 
     @Override
+    public boolean isPinend() {
+        return false;
+    }
+
+    @Override
     public boolean isCaptured() {
         return captured;
     }
@@ -46,6 +51,6 @@ public class Bauer implements iPiece{
 
     @Override
     public iMoveSet getMoveset() {
-        return new BauerMoveset(COLOR);
+        return new BauerMoveset(COLOR, this.position);
     }
 }

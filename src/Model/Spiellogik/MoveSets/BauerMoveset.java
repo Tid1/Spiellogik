@@ -3,6 +3,7 @@ package Model.Spiellogik.MoveSets;
 import Model.Spiellogik.Color;
 
 import Model.Spiellogik.Figuren.Position;
+import javafx.geometry.Pos;
 import sun.awt.image.ImageWatched;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
 public class BauerMoveset implements iMoveSet{
     boolean hasMoved = false;
     Color pieceColor;
+    private Position currentPosition;
     boolean test = false;
     private final int UPPER_BOUNDS = 8;
     private final int LOWER_BOUNDS = 0;
@@ -19,8 +21,9 @@ public class BauerMoveset implements iMoveSet{
     private final int SINGLE_MOVE = 1;
     private final int DOUBLE_MOVE = 2;
 
-    public BauerMoveset(Color color){
+    public BauerMoveset(Color color, Position position){
         this.pieceColor = color;
+        this.currentPosition = position;
     }
 
     @Override

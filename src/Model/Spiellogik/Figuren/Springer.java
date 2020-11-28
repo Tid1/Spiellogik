@@ -34,6 +34,11 @@ public class Springer implements iPiece{
     }
 
     @Override
+    public boolean isPinend() {
+        return false;
+    }
+
+    @Override
     public boolean isCaptured() {
         return captured;
     }

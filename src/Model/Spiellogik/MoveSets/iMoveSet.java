@@ -9,7 +9,7 @@ public interface iMoveSet {
     /**
      * Gibt an auf welche Position sich eine gegebene Figur von ihrer jetzigen Position bewegen darf
      * @param position Figur, dessen Aktionen überprüft werden sollen
-     * @return Ein Array aller Positionen auf denen sich die Figur befinden könnte
+     * @return Eine Liste aller Positionen auf denen sich die Figur befinden könnte
      */
     List<Position> moveSet(Position position);
 

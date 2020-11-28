@@ -6,7 +6,8 @@ import Model.Spiellogik.Figuren.iPiece;
 
 public interface iBoard {
     /**
-     * Wahrscheinlich 2d-Array aus int; Maybe auch 1d Array aus Positionen
+     * Erzeugt ein 2d Array aus int-Werten
+     * @throws StatusException wenn versucht wird die Methode in irgendeinem Zustand der nicht ONE_PICKED ist aufzurufen
      */
     void initializeField(iPlayer player1, iPlayer player2) throws StatusException;
 
@@ -23,6 +24,8 @@ public interface iBoard {
      * @param piece Figur die bewegt werden soll
      * @param x x-Wert der neuen Position
      * @param y y-Wert der neuen Position
+     * @throws GameException wenn ein Spieler versucht die Figuren des Gegners zu bewegen
+     * @throws StatusException wenn ein Spieler versucht einen Zug zu machen, obwohl dieser nicht am Zug ist
      */
     void move(iPiece piece, int x, int y) throws GameException, StatusException;
 
@@ -52,9 +55,19 @@ public interface iBoard {
      * @param x x-Koordinate der Position auf die sich bewegt werden soll
      * @param y y-Koordinate der Position auf die sich bewegt werden soll
      * @return true, wenn die Figur berechtigt ist diese Bewegung zu machen, false wenn nicht
+     * @throws GameException wenn die gewünschte Position außerhalb der Grenzen des Spielfelds ist
      */
     boolean checkValidMove(iPiece piece, int x, int y) throws GameException;
 
+    /**
+     * Lässt den Spieler eine Farbe auswählen, Insofern die Farbe noch nicht vergeben wurde
+     * @param playerName Name des Spielers der eine Farbe wählen möchte
+     * @param color Gewünschte Farbe
+     * @return true, wenn die gewünschte Farbe vorhanden ist oder wenn eine Farbe zugeteilt werden konnte, false
+     * wenn eine nicht vorhergesehene Farbe gewählt wurde
+     * @throws StatusException wenn die Methode im Falschen Zustand aufgerufen wurde
+     * @throws GameException wenn sich bereits zwei Spieler im Spiel befinden und eine weitere Person versucht eine Farbe zu wählen
+     */
     boolean pickColor(String playerName, Color color) throws StatusException, GameException;
 
 }

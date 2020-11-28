@@ -2,6 +2,7 @@ package Model.Spiellogik;
 
 import Model.Exceptions.GameException;
 import Model.Exceptions.StatusException;
+import Model.Spiellogik.*;
 import Model.Spiellogik.Figuren.Position;
 import Model.Spiellogik.Figuren.iPiece;
 import javafx.geometry.Pos;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BoardImpl implements iBoard{
+public class BoardImpl implements iBoard {
     private Map<iPlayer, List<iPiece>> map = new HashMap<>();
     private Status status = Status.START;
     private final int BOUNDS = 8;

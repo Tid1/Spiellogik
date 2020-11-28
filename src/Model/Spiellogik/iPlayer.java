@@ -7,5 +7,9 @@ public interface iPlayer {
      */
     Color getColor();
 
+    /**
+     * Name des Spielers
+     * @return Namen des Spielers
+     */
     String getName();
 }
