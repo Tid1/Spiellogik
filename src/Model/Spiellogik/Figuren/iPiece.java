@@ -50,8 +50,8 @@ public interface iPiece {
     void setCaputred(boolean caputred);
 
     /**
-     * Erstellt ein anonymes Moveset mit der Farbe der Figur
-     * @return
+     * Erstellt ein anonymes Moveset mit der Farbe der Figur und der derzeitigen Position
+     * @return das anonyme Moveset
      */
     iMoveSet getMoveset();
 }

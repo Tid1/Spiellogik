@@ -46,8 +46,7 @@ public class BoardProtocolEngine implements iBoard {
                     throw new GameException("Could't find Method");
             }
         } catch (IOException e) {
-            //TODO idk irgendwas als filler maybe?
-            //TODO Nachfragen ob das nen Grund hat weshalb die exceptions weiter geworfen werden
+            e.printStackTrace();
         }
     }
 
@@ -67,6 +66,7 @@ public class BoardProtocolEngine implements iBoard {
         baos.reset();
         DataOutputStream daos = new DataOutputStream(baos);
         try {
+            daos.writeInt(METHOD_MOVE);
             daos.writeInt(piece.getPosition().getX());
             daos.writeInt(piece.getPosition().getY());
             daos.writeInt(x);

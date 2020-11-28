@@ -1,9 +1,11 @@
 import Model.Exceptions.GameException;
 import Model.Exceptions.StatusException;
+import Model.Spiellogik.Color;
 import Model.Spiellogik.Figuren.Position;
 import Model.Spiellogik.Figuren.Typ;
 import Model.Spiellogik.Figuren.iPiece;
 import Model.Spiellogik.iBoard;
+import Model.Spiellogik.iPlayer;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -175,6 +177,74 @@ public class GameEngineTests {
       /*  Position expectedPosition = new Position(7, 5);
         assertEquals(piece.getPosition().getX(), expectedPosition.getX());
         assertEquals(piece.getPosition().getY(), expectedPosition.getY());*/
+
+    }
+
+    private class BoardEngineTester implements iBoard{
+        private boolean lastCallMove = false;
+        private boolean lastCallPickColor = false;
+
+        private iPiece piece = null;
+        private int x = 0;
+        private int y = 0;
+
+        private String name;
+        private Color color;
+
+        @Override
+        public void initializeField(iPlayer player1, iPlayer player2) throws StatusException {
+            //Kann leer bleiben
+        }
+
+        @Override
+        public iPiece onField(int x, int y) {
+            //Kann leer bleiben
+            return null;
+        }
+
+        @Override
+        public void move(iPiece piece, int x, int y) throws GameException, StatusException {
+            this.lastCallMove = true;
+            this.lastCallPickColor = false;
+            this.piece = piece;
+            this.x = x;
+            this.y = y;
+
+        }
+
+        @Override
+        public boolean checkForCheck(iPlayer player) {
+            //Kann leer bleiben
+            return false;
+        }
+
+        @Override
+        public boolean checkMate(iPlayer player) {
+            //Kann leer bleiben
+            return false;
+        }
+
+        @Override
+        public boolean checkStalemate() {
+            //Kann leer bleiben
+            return false;
+        }
+
+        @Override
+        public boolean checkValidMove(iPiece piece, int x, int y) throws GameException {
+            //Kann leer bleiben
+            return false;
+        }
+
+        @Override
+        public boolean pickColor(String playerName, Color color) throws StatusException, GameException {
+            this.lastCallPickColor = true;
+            this.lastCallMove = false;
+            this.name = playerName;
+            this.color = color;
+            //Dummy return
+            return false;
+        }
 
     }
 
