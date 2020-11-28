@@ -3,6 +3,8 @@ package Model.Daten;
 import Model.Spiellogik.iBoard;
 
 public interface iStorage {
+
+    //TODO zur Persistierung Shared preferences benutzen; für objecte GSON files
     /**
      * Fügt den Zustand eines Spielfelds zu einem Speicher hinzu
      * @param board Das Board, dessen Zustand gespeichert werden soll
