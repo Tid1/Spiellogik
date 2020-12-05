@@ -85,7 +85,7 @@ public class BoardImpl implements iBoard {
         if (x >= BOUNDS || y >= BOUNDS || x < 0 || y < 0){
             throw new GameException("Out of Bounds!");
         }
-        List<Position> movsets = piece.getMoveset().moveSet(new Position(x, y));
+        List<Position> movsets = piece.getMoveset().moveSet(this);
         for (Position move : movsets){
             if (move.getX() == x && move.getY() == y){
                 return true;

@@ -1,6 +1,7 @@
 package Model.Spiellogik.Figuren;
 
 import Model.Spiellogik.Color;
+import Model.Spiellogik.MoveSets.SpringerMoveset;
 import Model.Spiellogik.MoveSets.iMoveSet;
 
 public class Springer implements iPiece{
@@ -50,6 +51,6 @@ public class Springer implements iPiece{
 
     @Override
     public iMoveSet getMoveset() {
-        return null;
+        return new SpringerMoveset(COLOR, this.position);
     }
 }

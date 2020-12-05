@@ -1,6 +1,7 @@
 package Model.Spiellogik.Figuren;
 
 import Model.Spiellogik.Color;
+import Model.Spiellogik.MoveSets.LaeuferMoveset;
 import Model.Spiellogik.MoveSets.iMoveSet;
 
 public class Laeufer implements iPiece{
@@ -50,6 +51,6 @@ public class Laeufer implements iPiece{
 
     @Override
     public iMoveSet getMoveset() {
-        return null;
+        return new LaeuferMoveset(COLOR, this.position);
     }
 }

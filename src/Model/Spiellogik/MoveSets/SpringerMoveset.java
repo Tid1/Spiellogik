@@ -1,24 +1,25 @@
 package Model.Spiellogik.MoveSets;
 
-import Model.Spiellogik.Color;
-import Model.Spiellogik.Figuren.Position;
-import Model.Spiellogik.Figuren.Springer;
-import javafx.geometry.Pos;
+import Model.Spiellogik.*;
+import Model.Spiellogik.Figuren.*;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class SpringerMoveset implements iMoveSet{
     private Color pieceColor;
+    private Position currentPosition;
     private final int UPPER_BOUND = 8;
     private final int LOWER_BOUND = 0;
 
-    public SpringerMoveset(Color pieceColor){
+    public SpringerMoveset(Color pieceColor, Position currentPosition){
         this.pieceColor = pieceColor;
+        this.currentPosition = currentPosition;
+
     }
 
     @Override
-    public List<Position> moveSet(Position position) {
+    public List<Position> moveSet(iBoard board) {
         return null;
     }
 

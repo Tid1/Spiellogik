@@ -52,6 +52,6 @@ public class Turm implements iPiece{
 
     @Override
     public iMoveSet getMoveset() {
-        return new TurmMoveset(COLOR);
+        return new TurmMoveset(COLOR, this.position);
     }
 }

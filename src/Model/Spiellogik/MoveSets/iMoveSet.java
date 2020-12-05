@@ -2,6 +2,7 @@ package Model.Spiellogik.MoveSets;
 
 import Model.Spiellogik.Figuren.Position;
 import Model.Spiellogik.Figuren.iPiece;
+import Model.Spiellogik.iBoard;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface iMoveSet {
      * @param position Figur, dessen Aktionen überprüft werden sollen
      * @return Eine Liste aller Positionen auf denen sich die Figur befinden könnte
      */
-    List<Position> moveSet(Position position);
+    List<Position> moveSet(iBoard board);
 
 
     //TODO macht das Sinn eine Figur mitzugeben? Kann das zu circular dependency führen?
