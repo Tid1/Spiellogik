@@ -31,10 +31,12 @@ public class LaeuferMoveset implements iMoveSet{
             validMoves.add(new Position(i, currentPosition.getY()));
             validMoves.add(new Position(currentPosition.getX(), i));
         }
+
         for (int i = currentPosition.getX(); i >= LOWER_BOUND; i--){
             validMoves.add(new Position(i, currentPosition.getY()));
             validMoves.add(new Position(currentPosition.getX(), i));
         }
+
         return validMoves;
     }
 }
