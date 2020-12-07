@@ -43,7 +43,7 @@ public class BoardProtocolEngine implements iBoard {
                     this.deserializePickColor();
                     break;
                 default:
-                    throw new GameException("Could't find Method");
+                    throw new GameException("Couldn't find Method");
             }
         } catch (IOException e) {
             e.printStackTrace();
