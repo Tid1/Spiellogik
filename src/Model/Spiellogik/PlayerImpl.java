@@ -19,4 +19,9 @@ public class PlayerImpl implements iPlayer {
     public String getName() {
         return NAME;
     }
+
+    @Override
+    public boolean surrender() {
+        return true;
+    }
 }

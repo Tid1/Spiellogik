@@ -4,9 +4,14 @@ import Model.Spiellogik.Color;
 import Model.Spiellogik.Figuren.Position;
 import Model.Spiellogik.Figuren.Typ;
 import Model.Spiellogik.Figuren.iPiece;
+import Model.Spiellogik.Status;
 import Model.Spiellogik.iBoard;
 import Model.Spiellogik.iPlayer;
+import Netzwerk.BoardProtocolEngine;
 import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -161,6 +166,124 @@ public class GameEngineTests {
         assertThrows(GameException.class,() ->{
             board.move(bauer,3, 5);
         });
+    }
+
+    @Test
+    void  wrongTurnToMoveTest() throws GameException, StatusException {
+        Status status = Status.TURN_WHITE;
+        iBoard board = null;
+        iPiece blackPiece = null;
+
+        blackPiece.setPosition(4,4);
+        board.move(blackPiece, 5, 5);
+
+        Position expected = new Position(4, 4);
+        assertEquals(blackPiece.getPosition().getX(), expected.getX());
+        assertEquals(blackPiece.getPosition().getY(), expected.getY());
+    }
+
+    @Test
+    void checkPieceOnPosition(){
+        iBoard board = null;
+        iPiece piece = null;
+
+        piece.setPosition(4,4);
+        iPiece expected = board.onField(4,4);
+
+        assertEquals(expected, piece);
+    }
+
+    @Test
+    void surrenderSuccessful(){
+        Status status = Status.TURN_WHITE;
+        iPlayer playerBlack = null;
+
+        boolean expected = playerBlack.surrender();
+        assertTrue(expected);
+    }
+
+    @Test
+    void turmMoveSuccessX() throws GameException, StatusException {
+        iBoard board = null;
+        iPiece turm = null;
+
+        turm.setPosition(3,3);
+        board.move(turm, 6, 3);
+
+        Position expected = new Position(6, 3);
+
+        assertEquals(turm.getPosition().getX(), expected.getX());
+        assertEquals(turm.getPosition().getY(), expected.getY());
+    }
+
+    @Test
+    void turmMoveUnsuccessfulX() throws GameException, StatusException {
+        iBoard board = null;
+        iPiece turm = null;
+        iPiece ranPiece = null;
+
+        turm.setPosition(3,3);
+        ranPiece.setPosition(5, 3);
+
+        board.move(turm, 6, 3);
+
+        Position expected = new Position(3, 3);
+
+        assertEquals(turm.getPosition().getX(), expected.getX());
+        assertEquals(turm.getPosition().getY(), expected.getY());
+    }
+
+    @Test
+    void turmMoveSuccessY() throws GameException, StatusException {
+        iBoard board = null;
+        iPiece turm = null;
+
+        turm.setPosition(3,3);
+
+        board.move(turm, 3, 6);
+
+        Position expected = new Position(3, 6);
+
+        assertEquals(turm.getPosition().getX(), expected.getX());
+        assertEquals(turm.getPosition().getY(), expected.getY());
+    }
+
+    @Test
+    void turmMoveUnsuccessfulY() throws GameException, StatusException {
+        iBoard board = null;
+        iPiece turm = null;
+        iPiece ranPiece = null;
+
+        turm.setPosition(3,3);
+        ranPiece.setPosition(3, 5);
+
+        board.move(turm, 3, 6);
+
+        Position expected = new Position(3, 3);
+
+        assertEquals(turm.getPosition().getX(), expected.getX());
+        assertEquals(turm.getPosition().getY(), expected.getY());
+    }
+
+    @Test
+    void protocolMachineMoveSuccess() throws GameException, StatusException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        iBoard boardSender = null;
+        iPiece piece = null;
+        piece.setPosition(4, 4);
+        BoardProtocolEngine engine = new BoardProtocolEngine(boardSender, baos, null);
+
+        engine.move(piece,5, 4);
+        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+
+        BoardEngineTester boardMockReceiver = new BoardEngineTester();
+        BoardProtocolEngine engineMock = new BoardProtocolEngine(boardMockReceiver,null, bais);
+
+        assertTrue(boardMockReceiver.lastCallMove);
+        assertEquals(piece.getPosition().getX(), boardMockReceiver.x);
+        assertEquals(piece.getPosition().getY(), boardMockReceiver.y);
+        assertEquals(piece, boardMockReceiver.piece);
+
     }
 
     @Test

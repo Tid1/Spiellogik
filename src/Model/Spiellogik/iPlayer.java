@@ -12,4 +12,6 @@ public interface iPlayer {
      * @return Namen des Spielers
      */
     String getName();
+
+    boolean surrender();
 }
