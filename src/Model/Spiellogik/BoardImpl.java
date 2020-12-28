@@ -16,6 +16,8 @@ public class BoardImpl implements iBoard {
     private Map<iPlayer, List<iPiece>> map = new HashMap<>();
     private Status status = Status.START;
     private final int BOUNDS = 8;
+    private final int UPPERBOUNDS = 8;
+    private final int LOWERBOUNDS = 1;
     private final int PLAYER_LIMIT = 2;
     private final int FIRST_PLAYER = 0;
     private int[][] field;
@@ -142,5 +144,11 @@ public class BoardImpl implements iBoard {
             this.status = Status.TURN_BLACK;
         }
         this.status = Status.TURN_WHITE;
+    }
+    public int getUPPERBOUNDS() {
+        return UPPERBOUNDS;
+    }
+    public int getLOWERBOUNDS() {
+        return LOWERBOUNDS;
     }
 }
