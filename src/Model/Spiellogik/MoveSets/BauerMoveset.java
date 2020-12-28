@@ -15,7 +15,7 @@ public class BauerMoveset implements iMoveSet{
     private Position currentPosition;
     boolean test = false;
     private final int UPPER_BOUNDS = 8;
-    private final int LOWER_BOUNDS = 0;
+    private final int LOWER_BOUNDS = 1;
 
     private final int WHITE_PAWN_START = 2;
     private final int BLACK_PAWN_START = 7;

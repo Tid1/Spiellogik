@@ -12,8 +12,6 @@ import java.util.List;
 public class LaeuferMoveset implements iMoveSet{
     private Color pieceColor;
     private Position currentPosition;
-    private final int UPPER_BOUND = 8;
-    private final int LOWER_BOUND = 0;
 
     public LaeuferMoveset(Color pieceColor, Position currentPosition) {
         this.pieceColor = pieceColor;
@@ -27,20 +25,7 @@ public class LaeuferMoveset implements iMoveSet{
 
     //TODO JOSHUA NACH IMPLEMENTIERUNG FRAGEN
     private List<Position> move(iBoard board){
-        List<Position> validMoves = new LinkedList<>();
-        validMoves = MoveSetAssist.getDiagonalMoveset((BoardImpl) board, pieceColor, currentPosition);
-        /*
-
-        for (int i = currentPosition.getX(); i < UPPER_BOUND; i++){
-            validMoves.add(new Position(i, currentPosition.getY()));
-            validMoves.add(new Position(currentPosition.getX(), i));
-        }
-
-        for (int i = currentPosition.getX(); i >= LOWER_BOUND; i--){
-            validMoves.add(new Position(i, currentPosition.getY()));
-            validMoves.add(new Position(currentPosition.getX(), i));
-        } */
-
+        List<Position> validMoves = MoveSetAssist.getDiagonalMoveset((BoardImpl) board, pieceColor, currentPosition);
         return validMoves;
     }
 }

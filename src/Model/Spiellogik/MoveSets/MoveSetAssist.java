@@ -55,7 +55,7 @@ public class MoveSetAssist {
             }
             if (bl) {
                 if (currentPosition.getX()-i>board.getLOWERBOUNDS() || currentPosition.getY()-i>board.getLOWERBOUNDS()) {
-                    br=false;
+                    bl=false;
                 } else {
                     if (board.onField(currentPosition.getX()-i, currentPosition.getY()-i) == null) {
                         validMoves.add(new Position(currentPosition.getX()-i, currentPosition.getY()-i));
@@ -68,6 +68,73 @@ public class MoveSetAssist {
                 }
             }
             if (!tr && !tl && !br && !bl) {
+                break;
+            }
+        }
+        return validMoves;
+    }
+
+    static List<Position> getHorizontalVerticalMoveset(BoardImpl board, Color picecolor, Position currentPosition) {
+        List<Position> validMoves = new LinkedList<>();
+        boolean left=true, right=true, top=true, bottom=true;
+        for (int i = 1; i<=board.getUPPERBOUNDS(); i++){
+            if (top) {
+                if (currentPosition.getY()+i>board.getUPPERBOUNDS()) {
+                    top=false;
+                } else {
+                    if (board.onField(currentPosition.getX(), currentPosition.getY()+i) == null) {
+                        validMoves.add(new Position(currentPosition.getX(), currentPosition.getY()+i));
+                    } else if (board.onField(currentPosition.getX(), currentPosition.getY()+i).getColor() !=picecolor) {
+                        validMoves.add(new Position(currentPosition.getX(), currentPosition.getY()+i));
+                        top=false;
+                    } else {
+                        top=false;
+                    }
+                }
+            }
+            if (right) {
+                if (currentPosition.getX()+i>board.getLOWERBOUNDS()) {
+                    right=false;
+                } else {
+                    if (board.onField(currentPosition.getX()+i, currentPosition.getY()) == null) {
+                        validMoves.add(new Position(currentPosition.getX()+i, currentPosition.getY()));
+                    } else if (board.onField(currentPosition.getX()+i, currentPosition.getY()+i).getColor() !=picecolor) {
+                        validMoves.add(new Position(currentPosition.getX()+i, currentPosition.getY()));
+                        right=false;
+                    } else {
+                        right=false;
+                    }
+                }
+            }
+            if (bottom) {
+                if (currentPosition.getY()-i>board.getLOWERBOUNDS()) {
+                    bottom=false;
+                } else {
+                    if (board.onField(currentPosition.getX(), currentPosition.getY()-i) == null) {
+                        validMoves.add(new Position(currentPosition.getX(), currentPosition.getY()-i));
+                    } else if (board.onField(currentPosition.getX(), currentPosition.getY()-i).getColor() !=picecolor) {
+                        validMoves.add(new Position(currentPosition.getX(), currentPosition.getY()-i));
+                        bottom=false;
+                    } else {
+                        bottom=false;
+                    }
+                }
+            }
+            if (left) {
+                if (currentPosition.getX()-i>board.getLOWERBOUNDS()) {
+                    left=false;
+                } else {
+                    if (board.onField(currentPosition.getX()-i, currentPosition.getY()) == null) {
+                        validMoves.add(new Position(currentPosition.getX()-i, currentPosition.getY()));
+                    } else if (board.onField(currentPosition.getX()-i, currentPosition.getY()).getColor() !=picecolor) {
+                        validMoves.add(new Position(currentPosition.getX()-i, currentPosition.getY()));
+                        left=false;
+                    } else {
+                        left=false;
+                    }
+                }
+            }
+            if (!top && !right && !bottom && !left) {
                 break;
             }
         }
