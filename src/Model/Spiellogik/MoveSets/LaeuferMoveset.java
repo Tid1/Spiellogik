@@ -1,5 +1,6 @@
 package Model.Spiellogik.MoveSets;
 
+import Model.Spiellogik.BoardImpl;
 import Model.Spiellogik.Color;
 import Model.Spiellogik.Figuren.Position;
 import Model.Spiellogik.iBoard;
@@ -21,12 +22,15 @@ public class LaeuferMoveset implements iMoveSet{
 
     @Override
     public List<Position> moveSet(iBoard board) {
-        return move();
+        return move(board);
     }
 
     //TODO JOSHUA NACH IMPLEMENTIERUNG FRAGEN
-    private List<Position> move(){
+    private List<Position> move(iBoard board){
         List<Position> validMoves = new LinkedList<>();
+        validMoves = MoveSetAssist.getDiagonalMoveset((BoardImpl) board, pieceColor, currentPosition);
+        /*
+
         for (int i = currentPosition.getX(); i < UPPER_BOUND; i++){
             validMoves.add(new Position(i, currentPosition.getY()));
             validMoves.add(new Position(currentPosition.getX(), i));
@@ -35,7 +39,7 @@ public class LaeuferMoveset implements iMoveSet{
         for (int i = currentPosition.getX(); i >= LOWER_BOUND; i--){
             validMoves.add(new Position(i, currentPosition.getY()));
             validMoves.add(new Position(currentPosition.getX(), i));
-        }
+        } */
 
         return validMoves;
     }
