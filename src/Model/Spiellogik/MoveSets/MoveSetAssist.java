@@ -2,6 +2,8 @@ package Model.Spiellogik.MoveSets;
 
 import Model.Spiellogik.*;
 import Model.Spiellogik.Figuren.Position;
+import Model.Spiellogik.Figuren.Typ;
+import Model.Spiellogik.Figuren.iPiece;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -139,5 +141,123 @@ public class MoveSetAssist {
             }
         }
         return validMoves;
+    }
+    static int countCheck(BoardImpl board, Color color, Position currentPosition) {
+        boolean[] positionBooleanArray = new boolean[8];
+        int counter = 0;
+        for (int i=0; i<8; i++) {
+            positionBooleanArray[i] = true;
+        }
+        for (int i=0; i<8; i++) {
+            for (int j=1; j<=board.getUPPERBOUNDS(); j++) {
+                iPiece tempPiece = null;
+                switch (i) {
+                    case 0: //direction: top-left
+                        if (positionBooleanArray[i]) {
+                            if (currentPosition.getX()-j >= board.getLOWERBOUNDS() && currentPosition.getY()+j <= board.getUPPERBOUNDS()) {
+                                tempPiece = board.onField(currentPosition.getX()-j, currentPosition.getY()+j);
+                            } else {
+                                positionBooleanArray[i] = false;
+                            }
+                        }
+                        break;
+                    case 1: //direction: top
+                        if (positionBooleanArray[i]) {
+                            if (currentPosition.getY()+j <= board.getUPPERBOUNDS()) {
+                                tempPiece = board.onField(currentPosition.getX(), currentPosition.getY()+j);
+                            } else {
+                                positionBooleanArray[i] = false;
+                            }
+                        }
+                        break;
+                    case 2: //direction: top-right
+                        if (positionBooleanArray[i]) {
+                            if (currentPosition.getX()+j <= board.getUPPERBOUNDS() && currentPosition.getY()+j <= board.getUPPERBOUNDS()) {
+                                tempPiece = board.onField(currentPosition.getX()+j, currentPosition.getY()+j);
+                            } else {
+                                positionBooleanArray[i] = false;
+                            }
+                        }
+                        break;
+                    case 3: //direction: right
+                        if (positionBooleanArray[i]) {
+                            if (currentPosition.getX()+j <= board.getUPPERBOUNDS()) {
+                                tempPiece = board.onField(currentPosition.getX()+j, currentPosition.getY());
+                            } else {
+                                positionBooleanArray[i] = false;
+                            }
+                        }
+                        break;
+                    case 4: //direction: bottom-right
+                        if (positionBooleanArray[i]) {
+                            if (currentPosition.getX()+j <= board.getUPPERBOUNDS() && currentPosition.getY()-j >= board.getLOWERBOUNDS()) {
+                                tempPiece = board.onField(currentPosition.getX()+j, currentPosition.getY()-j);
+                            } else {
+                                positionBooleanArray[i] = false;
+                            }
+                        }
+                        break;
+                    case 5: //direction: bottom
+                        if (positionBooleanArray[i]) {
+                            if (currentPosition.getY()-j >= board.getLOWERBOUNDS()) {
+                                tempPiece = board.onField(currentPosition.getX(), currentPosition.getY()-j);
+                            } else {
+                                positionBooleanArray[i] = false;
+                            }
+                        }
+                        break;
+                    case 6: //direction: bottom-left
+                        if (positionBooleanArray[i]) {
+                            if (currentPosition.getX()-j >= board.getLOWERBOUNDS() && currentPosition.getY()-j >= board.getLOWERBOUNDS()) {
+                                tempPiece = board.onField(currentPosition.getX()-j, currentPosition.getY()-j);
+                            } else {
+                                positionBooleanArray[i] = false;
+                            }
+                        }
+                        break;
+                    case 7: //direction: left
+                        if (positionBooleanArray[i]) {
+                            if (currentPosition.getX()-j >= board.getLOWERBOUNDS()) {
+                                tempPiece = board.onField(currentPosition.getX()-j, currentPosition.getY());
+                            } else {
+                                positionBooleanArray[i] = false;
+                            }
+                        }
+                        break;
+                }
+                if (tempPiece != null) {
+                    positionBooleanArray[i] = false;
+                    if (tempPiece.getColor()!=color) {
+                        if (j==1) {
+                            if (tempPiece.getType() == Typ.KOENIG) {
+                                counter++;
+                            }
+                        }
+                        if (i%2 ==0) {
+                            if (tempPiece.getType() == Typ.LAEUFER || tempPiece.getType() == Typ.DAME) {
+                                counter++;
+                            }
+                            if (j==1) {
+                                if (tempPiece.getType() == Typ.BAUER) {
+                                    if (color==Color.White && (i==0 || i==2)) {
+                                        counter++;
+                                    } else if (i==4 || i==6) {
+                                        counter++;
+                                    }
+                                }
+                            }
+                        } else {
+                            if (tempPiece.getType() == Typ.TURM || tempPiece.getType() == Typ.DAME) {
+                                counter++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // TODO: Springerabfrage
+
+        return counter;
     }
 }
