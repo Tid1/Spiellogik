@@ -169,7 +169,8 @@ public class BoardProtocolEngine implements iBoard {
         return baos;
     }
 
-    public void updateBais(byte[] arr){
+    public void updateBais(byte[] arr) throws GameException, StatusException {
         this.bais = new ByteArrayInputStream(arr);
+        deserialize();
     }
 }
