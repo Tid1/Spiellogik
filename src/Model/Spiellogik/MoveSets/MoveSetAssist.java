@@ -256,6 +256,7 @@ public class MoveSetAssist {
             }
         }
 
+        //cock
         // TODO: Springerabfrage
 
         return counter;
