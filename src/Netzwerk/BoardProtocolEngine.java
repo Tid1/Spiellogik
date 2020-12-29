@@ -31,7 +31,7 @@ public class BoardProtocolEngine implements iBoard {
         this.bais = bais;
     }
 
-    private void deserialize() throws GameException, StatusException{
+    public void deserialize() throws GameException, StatusException{
         DataInputStream dais = new DataInputStream(bais);
         try {
             int method = dais.readInt();
@@ -165,4 +165,11 @@ public class BoardProtocolEngine implements iBoard {
         }
     }
 
+    public ByteArrayOutputStream getBaos(){
+        return baos;
+    }
+
+    public void updateBais(byte[] arr){
+        this.bais = new ByteArrayInputStream(arr);
+    }
 }
