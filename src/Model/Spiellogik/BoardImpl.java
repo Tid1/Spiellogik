@@ -106,7 +106,15 @@ public class BoardImpl implements iBoard {
 
     @Override
     public boolean checkStalemate(iPlayer player) {
-        return false;
+        List<iPiece> pieceList = map.get(player);
+        if (!checkForCheck(player)) {
+            for (iPiece piece : pieceList) {
+                if (piece.getMoveset().moveSet(this) != null) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @Override
