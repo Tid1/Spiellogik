@@ -8,6 +8,7 @@ public class Koenig implements iPiece {
     private final Typ TYP = Typ.KOENIG;
     private Position position;
     private boolean captured = false;
+    private boolean hasMoved = false;
 
     public Koenig(Color color){
         this.COLOR = color;
@@ -51,5 +52,9 @@ public class Koenig implements iPiece {
     @Override
     public iMoveSet getMoveset() {
         return null;
+    }
+
+    public boolean hasMoved() {
+        return hasMoved;
     }
 }

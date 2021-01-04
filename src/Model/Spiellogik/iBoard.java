@@ -45,9 +45,10 @@ public interface iBoard {
 
     /**
      * Überprüft ob das Spiel in einem Patt endet
+     * @param player Spieler, bei dem die Überprüfung stattfinden soll
      * @return true, wenn das Spiel in einem Patt geendet ist, false wenn nicht
      */
-    boolean checkStalemate();
+    boolean checkStalemate(iPlayer player);
 
     /**
      * Überprüft ob die Figur dazu berchtigt ist eine bestimmte Bewegung zu machen

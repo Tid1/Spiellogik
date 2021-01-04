@@ -4,6 +4,7 @@ import Model.Exceptions.GameException;
 import Model.Exceptions.StatusException;
 import Model.Spiellogik.*;
 import Model.Spiellogik.Figuren.Position;
+import Model.Spiellogik.Figuren.Typ;
 import Model.Spiellogik.Figuren.iPiece;
 import javafx.geometry.Pos;
 
@@ -61,14 +62,23 @@ public class BoardImpl implements iBoard {
                 }
                 pieceOnField.setCaputred(true);
             }
-            changeTurns();
+            if (piece.getType() == Typ.KOENIG) {
+                if (piece.getPosition().getX()-x == 2) {
+                    onField(1, piece.getPosition().getY()).setPosition(4, piece.getPosition().getY());
+                }
+                if (piece.getPosition().getX()-x == -2) {
+                    onField(8, piece.getPosition().getY()).setPosition(6, piece.getPosition().getY());
+                }
+            }
             piece.setPosition(x, y);
+            changeTurns();
         }
         throw new GameException("Illegal Move");
     }
 
     @Override
     public boolean checkForCheck(iPlayer player) {
+
         return false;
     }
 
@@ -78,7 +88,7 @@ public class BoardImpl implements iBoard {
     }
 
     @Override
-    public boolean checkStalemate() {
+    public boolean checkStalemate(iPlayer player) {
         return false;
     }
 

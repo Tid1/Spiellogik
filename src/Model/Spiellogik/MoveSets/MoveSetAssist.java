@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MoveSetAssist {
+    static int counter;
     static List<Position> getDiagonalMoveset(BoardImpl board, Color picecolor, Position currentPosition) {
         List<Position> validMoves = new LinkedList<>();
         boolean tr=true, tl=true, br=true, bl=true;
@@ -144,7 +145,7 @@ public class MoveSetAssist {
     }
     static int countCheck(BoardImpl board, Color color, Position currentPosition) {
         boolean[] positionBooleanArray = new boolean[8];
-        int counter = 0;
+        counter = 0;
         for (int i=0; i<8; i++) {
             positionBooleanArray[i] = true;
         }
@@ -256,9 +257,47 @@ public class MoveSetAssist {
             }
         }
 
-        //cock
-        // TODO: Springerabfrage
+        tempMethod(board, color, currentPosition, 1, 2);
+
+        tempMethod(board, color, currentPosition,  2, 1);
 
         return counter;
+    }
+
+    private static void tempMethod(BoardImpl board, Color color, Position currentPosition, int x, int y) {
+        iPiece tempPiece = null;
+        if (currentPosition.getX()+x <= board.getUPPERBOUNDS() && currentPosition.getY()+y <= board.getUPPERBOUNDS()) {
+            tempPiece = board.onField(currentPosition.getX()+x, currentPosition.getY()+y);
+            if (checkField(tempPiece, color)) {
+                counter++;
+            }
+        }
+        if (currentPosition.getX()+x <= board.getUPPERBOUNDS() && currentPosition.getY()-y <= board.getLOWERBOUNDS()) {
+            tempPiece = board.onField(currentPosition.getX()+ x, currentPosition.getY()- y);
+            if (checkField(tempPiece, color)) {
+                counter++;
+            }
+        }
+        if (currentPosition.getX()-x <= board.getLOWERBOUNDS() && currentPosition.getY()+y <= board.getUPPERBOUNDS()) {
+            tempPiece = board.onField(currentPosition.getX()- x, currentPosition.getY()+ y);
+            if (checkField(tempPiece, color)) {
+                counter++;
+            }
+        }
+        if (currentPosition.getX()-x <= board.getLOWERBOUNDS() && currentPosition.getY()-y <= board.getLOWERBOUNDS()) {
+            tempPiece = board.onField(currentPosition.getX()- x, currentPosition.getY()- y);
+            if (checkField(tempPiece, color)) {
+                counter++;
+            }
+        }
+    }
+
+    private static boolean checkField(iPiece tempPiece, Color color) {
+        if (tempPiece == null) {
+            return false;
+        } else if (tempPiece.getColor()!=color) {
+            return true;
+        }
+        return false;
     }
 }

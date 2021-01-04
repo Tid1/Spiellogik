@@ -54,4 +54,8 @@ public class Turm implements iPiece{
     public iMoveSet getMoveset() {
         return new TurmMoveset(COLOR, this.position);
     }
+
+    public boolean hasMoved() {
+        return hasMoved;
+    }
 }
