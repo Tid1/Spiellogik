@@ -6,6 +6,7 @@ import Model.Spiellogik.*;
 import Model.Spiellogik.Figuren.Position;
 import Model.Spiellogik.Figuren.Typ;
 import Model.Spiellogik.Figuren.iPiece;
+import Model.Spiellogik.MoveSets.MoveSetAssist;
 import javafx.geometry.Pos;
 
 import java.util.ArrayList;
@@ -78,7 +79,15 @@ public class BoardImpl implements iBoard {
 
     @Override
     public boolean checkForCheck(iPlayer player) {
-
+        List<iPiece> pieceList = map.get(player);
+        for (iPiece piece : pieceList) {
+            if (piece.getType() == Typ.KOENIG) {
+                if (MoveSetAssist.countCheck(this, player.getColor(), piece.getPosition())>0) {
+                    return true;
+                }
+                break;
+            }
+        }
         return false;
     }
 

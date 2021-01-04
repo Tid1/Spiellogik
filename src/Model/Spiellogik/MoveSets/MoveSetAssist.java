@@ -143,7 +143,7 @@ public class MoveSetAssist {
         }
         return validMoves;
     }
-    static int countCheck(BoardImpl board, Color color, Position currentPosition) {
+    public static int countCheck(BoardImpl board, Color color, Position currentPosition) {
         boolean[] positionBooleanArray = new boolean[8];
         counter = 0;
         for (int i=0; i<8; i++) {
