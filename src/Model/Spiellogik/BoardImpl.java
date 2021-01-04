@@ -24,6 +24,8 @@ public class BoardImpl implements iBoard {
     private final int FIRST_PLAYER = 0;
     private int[][] field;
 
+    //COMMIT COMMENT
+
     @Override
     public void initializeField(iPlayer player1, iPlayer player2) throws StatusException {
         if (this.status != Status.INIT_FIELD){
