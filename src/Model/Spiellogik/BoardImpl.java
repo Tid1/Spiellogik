@@ -7,6 +7,7 @@ import Model.Spiellogik.Figuren.*;
 import Model.Spiellogik.MoveSets.MoveSetAssist;
 import javafx.geometry.Pos;
 
+import java.lang.reflect.MalformedParameterizedTypeException;
 import java.util.*;
 
 public class BoardImpl implements iBoard {
@@ -99,6 +100,29 @@ public class BoardImpl implements iBoard {
                     onField(8, piece.getPosition().getY()).setPosition(6, piece.getPosition().getY());
                 }
             }
+
+            if (piece.getType() == Typ.BAUER){
+                List<iPiece> pieces;
+                if (piece.getColor() == Color.Black && y == LOWERBOUNDS){
+                    for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+                        if (entry.getKey().getColor() == Color.Black){
+                            pieces = entry.getValue();
+                            pieces.remove(piece);
+                            pieces.add(new Dame(Color.Black, new Position(x, y)));
+                        }
+                    }
+                } else if (y == UPPERBOUNDS){
+                    for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+                        if (entry.getKey().getColor() == Color.White){
+                            pieces = entry.getValue();
+                            pieces.remove(piece);
+                            pieces.add(new Dame(Color.White, new Position(x, y)));
+                        }
+                    }
+                    piece = new Dame(Color.White, new Position(x, y));
+                }
+            }
+
             piece.setPosition(x, y);
             changeTurns();
             return;
@@ -148,7 +172,7 @@ public class BoardImpl implements iBoard {
 
     @Override
     public boolean checkValidMove(iPiece piece, int x, int y) throws GameException {
-        if (x >= BOUNDS || y >= BOUNDS || x < 0 || y < 0){
+        if (x > UPPERBOUNDS || y > UPPERBOUNDS || x < LOWERBOUNDS || y < LOWERBOUNDS){
             throw new GameException("Out of Bounds!");
         }
         List<Position> movsets = piece.getMoveset().moveSet(this);

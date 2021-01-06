@@ -83,7 +83,7 @@ public class MoveSetAssist {
         boolean left=true, right=true, top=true, bottom=true;
         for (int i = 1; i<=board.getUPPERBOUNDS(); i++){
             if (top) {
-                if (currentPosition.getY()+i>board.getUPPERBOUNDS()) {
+                if (currentPosition.getY()+i > board.getUPPERBOUNDS()) {
                     top=false;
                 } else {
                     if (board.onField(currentPosition.getX(), currentPosition.getY()+i) == null) {
@@ -97,12 +97,12 @@ public class MoveSetAssist {
                 }
             }
             if (right) {
-                if (currentPosition.getX()+i>board.getLOWERBOUNDS()) {
+                if (currentPosition.getX()+i > board.getUPPERBOUNDS()) {
                     right=false;
                 } else {
                     if (board.onField(currentPosition.getX()+i, currentPosition.getY()) == null) {
                         validMoves.add(new Position(currentPosition.getX()+i, currentPosition.getY()));
-                    } else if (board.onField(currentPosition.getX()+i, currentPosition.getY()+i).getColor() !=picecolor) {
+                    } else if (board.onField(currentPosition.getX()+i, currentPosition.getY()).getColor() !=picecolor) {
                         validMoves.add(new Position(currentPosition.getX()+i, currentPosition.getY()));
                         right=false;
                     } else {
@@ -111,7 +111,7 @@ public class MoveSetAssist {
                 }
             }
             if (bottom) {
-                if (currentPosition.getY()-i>board.getLOWERBOUNDS()) {
+                if (currentPosition.getY()-i  < board.getLOWERBOUNDS()) {
                     bottom=false;
                 } else {
                     if (board.onField(currentPosition.getX(), currentPosition.getY()-i) == null) {
@@ -125,7 +125,7 @@ public class MoveSetAssist {
                 }
             }
             if (left) {
-                if (currentPosition.getX()-i>board.getLOWERBOUNDS()) {
+                if (currentPosition.getX()-i < board.getLOWERBOUNDS()) {
                     left=false;
                 } else {
                     if (board.onField(currentPosition.getX()-i, currentPosition.getY()) == null) {

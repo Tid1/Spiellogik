@@ -19,6 +19,8 @@ public class GameEngineTests {
     @Test
     void pickColorTestSuccess() throws StatusException, GameException {
         BoardImpl board = new BoardImpl();
+        boolean aliceInMap = false;
+        boolean bobInMap = false;
         board.pickColor(ALICE, Color.Black);
         board.pickColor(BOB, Color.White);
         int expectedSize = 2;
@@ -31,6 +33,16 @@ public class GameEngineTests {
         iPlayer player2 = players.get(1);
 
         assertNotEquals(player1.getColor(), player2.getColor());
+
+        for (iPlayer player : players){
+            if (player.getName().equals(ALICE)){
+                aliceInMap = true;
+            } else if (player.getName().equals(BOB)){
+                bobInMap = true;
+            }
+        }
+        assertTrue(aliceInMap);
+        assertTrue(bobInMap);
     }
 
     @Test
@@ -46,13 +58,25 @@ public class GameEngineTests {
 
     @Test
     void bauerStartSingleMove() throws GameException, StatusException {
-        iBoard board = null;
-        iPiece bauer = null;
+        BoardImpl board = new BoardImpl();
+        Bauer bauer = new Bauer(Color.White);
 
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(bauer);
+            }
+        }
         bauer.setPosition(2,2);
-        board.move(bauer, 3, 2);
+        board.move(bauer, 2, 3);
 
-        Position expectedPosition = new Position(3, 2);
+        Position expectedPosition = new Position(2, 3);
 
         assertEquals(bauer.getPosition().getX(), expectedPosition.getX());
         assertEquals(bauer.getPosition().getY(), expectedPosition.getY());
@@ -179,45 +203,82 @@ public class GameEngineTests {
 
     @Test
     void bauerGeschlagenFehler() throws GameException, StatusException {
-        iBoard board = null;
-        iPiece bauerWhiteOne = null;
-        iPiece bauerWhiteTwo = null;
+        BoardImpl board = new BoardImpl();
 
-        bauerWhiteOne.setPosition(4,4);
-        bauerWhiteTwo.setPosition(5,5);
+        iPiece bauerWhiteOne = new Bauer(Color.White);
+        iPiece bauerWhiteTwo = new Bauer(Color.White);
 
-        board.move(bauerWhiteOne, 5,5);
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
 
-        Position expectedPosition = new Position(4,4);
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
 
-        assertEquals(bauerWhiteOne.getPosition().getX(), expectedPosition.getX());
-        assertEquals(bauerWhiteOne.getPosition().getY(), expectedPosition.getY());
-        assertFalse(bauerWhiteTwo.isCaptured());
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(bauerWhiteOne);
+                entry.getValue().add(bauerWhiteTwo);
+            }
+        }
+
+        bauerWhiteOne.setPosition(4, 4);
+        bauerWhiteTwo.setPosition(5, 5);
+
+        assertThrows(GameException.class, () -> {
+            board.move(bauerWhiteOne, 5, 5);
+        });
+
+
     }
 
     @Test
-    void bauerZuKoenigen() throws GameException, StatusException {
-        iBoard board = null;
-        iPiece bauerWhite = null;
+    void bauerZuKoenigin() throws GameException, StatusException {
+        BoardImpl board = new BoardImpl();
 
-        bauerWhite.setPosition(7,3);
-        board.move(bauerWhite, 8,3);
+        iPiece bauer = new Bauer(Color.White);
 
-        Position expectedPosition = new Position(8,3);
-        Typ typ = Typ.KOENIG;
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
 
-        assertEquals(bauerWhite.getPosition().getX(), expectedPosition.getX());
-        assertEquals(bauerWhite.getPosition().getY(), expectedPosition.getY());
-        assertEquals(bauerWhite.getType(), typ);
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(bauer);
+            }
+        }
+
+        bauer.setPosition(3,7);
+        board.move(bauer, 3,8);
+
+        Typ typ = Typ.DAME;
+
+        assertEquals(typ, board.onField(3,8).getType());
     }
 
     @Test
     void bauerDoubleMoveFehler() throws GameException, StatusException {
-        iBoard board = null;
-        iPiece bauer = null;
+        BoardImpl board = new BoardImpl();
+        Bauer bauer = new Bauer(Color.White);
 
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(bauer);
+            }
+        }
         bauer.setPosition(4, 5);
-        board.move(bauer, 6, 5);
+        assertThrows(GameException.class, () -> {
+            board.move(bauer, 4, 7);
+        });
 
         Position expectedPosition = new Position(4, 5);
 
@@ -227,8 +288,21 @@ public class GameEngineTests {
 
     @Test
     void bauerMoveFehler() throws GameException, StatusException {
-        iBoard board = null;
-        iPiece bauer = null;
+        BoardImpl board = new BoardImpl();
+        Bauer bauer = new Bauer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(bauer);
+            }
+        }
 
         bauer.setPosition(4, 5);
 
@@ -238,9 +312,22 @@ public class GameEngineTests {
     }
 
     @Test
-    void bauerMoveBackwards(){
-        iBoard board = null;
-        iPiece bauer = null;
+    void bauerMoveBackwards() throws StatusException {
+        BoardImpl board = new BoardImpl();
+        Bauer bauer = new Bauer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(bauer);
+            }
+        }
 
         bauer.setPosition(4, 5);
 
@@ -251,42 +338,67 @@ public class GameEngineTests {
 
     @Test
     void  wrongTurnToMoveTest() throws GameException, StatusException {
-        Status status = Status.TURN_WHITE;
-        iBoard board = null;
-        iPiece blackPiece = null;
+        BoardImpl board = new BoardImpl();
+        Bauer bauer = new Bauer(Color.Black);
 
-        blackPiece.setPosition(4,4);
-        board.move(blackPiece, 5, 5);
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
 
-        Position expected = new Position(4, 4);
-        assertEquals(blackPiece.getPosition().getX(), expected.getX());
-        assertEquals(blackPiece.getPosition().getY(), expected.getY());
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.Black){
+                entry.getValue().add(bauer);
+            }
+        }
+        bauer.setPosition(4,4);
+        assertThrows(StatusException.class, () -> {
+            board.move(bauer, 4, 5);
+        });
     }
 
     @Test
-    void checkPieceOnPosition(){
-        iBoard board = null;
-        iPiece piece = null;
+    void checkPieceOnPosition() throws StatusException {
+        BoardImpl board = new BoardImpl();
+        Bauer bauer = new Bauer(Color.Black);
 
-        piece.setPosition(4,4);
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.Black){
+                entry.getValue().add(bauer);
+            }
+        }
+
+        bauer.setPosition(4,4);
         iPiece expected = board.onField(4,4);
-
-        assertEquals(expected, piece);
-    }
-
-    @Test
-    void surrenderSuccessful(){
-        Status status = Status.TURN_WHITE;
-        iPlayer playerBlack = null;
-
-        boolean expected = playerBlack.surrender();
-        assertTrue(expected);
+        assertEquals(expected, bauer);
     }
 
     @Test
     void turmMoveSuccessX() throws GameException, StatusException {
-        iBoard board = null;
-        iPiece turm = null;
+        BoardImpl board = new BoardImpl();
+        Turm turm = new Turm(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(turm);
+            }
+        }
 
         turm.setPosition(3,3);
         board.move(turm, 6, 3);
@@ -299,14 +411,30 @@ public class GameEngineTests {
 
     @Test
     void turmMoveUnsuccessfulX() throws GameException, StatusException {
-        iBoard board = null;
-        iPiece turm = null;
-        iPiece ranPiece = null;
+        BoardImpl board = new BoardImpl();
+        Bauer ranPiece = new Bauer(Color.White);
+        Turm turm = new Turm(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()) {
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White) {
+                entry.getValue().add(ranPiece);
+                entry.getValue().add(turm);
+            }
+        }
 
         turm.setPosition(3,3);
         ranPiece.setPosition(5, 3);
 
-        board.move(turm, 6, 3);
+        assertThrows(GameException.class, () -> {
+            board.move(turm, 6, 3);
+        });
 
         Position expected = new Position(3, 3);
 
@@ -316,9 +444,21 @@ public class GameEngineTests {
 
     @Test
     void turmMoveSuccessY() throws GameException, StatusException {
-        iBoard board = null;
-        iPiece turm = null;
+        BoardImpl board = new BoardImpl();
+        Turm turm = new Turm(Color.White);
 
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(turm);
+            }
+        }
         turm.setPosition(3,3);
 
         board.move(turm, 3, 6);
@@ -331,14 +471,30 @@ public class GameEngineTests {
 
     @Test
     void turmMoveUnsuccessfulY() throws GameException, StatusException {
-        iBoard board = null;
-        iPiece turm = null;
-        iPiece ranPiece = null;
+        BoardImpl board = new BoardImpl();
+        Turm turm = new Turm(Color.White);
+        Bauer ranPiece = new Bauer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(turm);
+                entry.getValue().add(ranPiece);
+            }
+        }
 
         turm.setPosition(3,3);
         ranPiece.setPosition(3, 5);
 
-        board.move(turm, 3, 6);
+        assertThrows(GameException.class, () -> {
+            board.move(turm, 3, 6);
+        });
 
         Position expected = new Position(3, 3);
 
@@ -347,40 +503,149 @@ public class GameEngineTests {
     }
 
     @Test
-    void protocolMachineMoveSuccess() throws GameException, StatusException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        iBoard boardSender = null;
-        iPiece piece = null;
-        piece.setPosition(4, 4);
-        BoardProtocolEngine engine = new BoardProtocolEngine(boardSender, baos, null);
+    void testTurmBlockedVonBauerStart() throws StatusException {
+        BoardImpl board = new BoardImpl();
+        Turm turm = new Turm(Color.White);
+        //Bauer ranPiece = new Bauer(Color.White);
 
-        engine.move(piece,5, 4);
-        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
 
-        BoardEngineTester boardMockReceiver = new BoardEngineTester();
-        BoardProtocolEngine engineMock = new BoardProtocolEngine(boardMockReceiver,null, bais);
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
 
-        assertTrue(boardMockReceiver.lastCallMove);
-        assertEquals(piece.getPosition().getX(), boardMockReceiver.x);
-        assertEquals(piece.getPosition().getY(), boardMockReceiver.y);
-        assertEquals(piece, boardMockReceiver.piece);
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(turm);
+               // entry.getValue().add(ranPiece);
+            }
+        }
+
+        turm.setPosition(3,3);
+       // ranPiece.setPosition(2, 3);
+
+        assertThrows(GameException.class, () -> {
+            board.move(turm, 3, 1);
+        });
+
+        Position expected = new Position(3, 3);
+
+        assertEquals(turm.getPosition().getX(), expected.getX());
+        assertEquals(turm.getPosition().getY(), expected.getY());
+    }
+
+    @Test
+    void testInitializeField() throws StatusException {
+        BoardImpl board = new BoardImpl();
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        Typ typ = Typ.BAUER;
+
+        for (int i = 1; i <= 8; i++){
+            assertNotNull(board.onField(i, 2));
+            assertNotNull(board.onField(i, 7));
+            assertNotNull(board.onField(i, 1));
+            assertNotNull(board.onField(i, 8));
+            assertEquals(typ, board.onField(i, 2).getType());
+            assertEquals(typ, board.onField(i, 7).getType());
+            assertEquals(Color.White, board.onField(i, 1).getColor());
+            assertEquals(Color.White, board.onField(i, 2).getColor());
+            assertEquals(Color.Black, board.onField(i, 7).getColor());
+            assertEquals(Color.Black, board.onField(i, 8).getColor());
+
+            if (i == 1 || i == 8){
+                assertEquals(Typ.TURM, board.onField(i, 1).getType());
+                assertEquals(Typ.TURM, board.onField(i, 8).getType());
+            } else if (i == 2 || i == 7){
+                assertEquals(Typ.LAEUFER, board.onField(i, 1).getType());
+                assertEquals(Typ.LAEUFER, board.onField(i, 8).getType());
+            } else if (i == 3 || i == 6){
+                assertEquals(Typ.SPRINGER, board.onField(i, 1).getType());
+                assertEquals(Typ.SPRINGER, board.onField(i, 8).getType());
+            } else if (i == 4){
+                assertEquals(Typ.DAME, board.onField(i, 1).getType());
+                assertEquals(Typ.DAME, board.onField(i, 8).getType());
+            } else if (i == 5){
+                assertEquals(Typ.KOENIG, board.onField(i, 1).getType());
+                assertEquals(Typ.KOENIG, board.onField(i, 8).getType());
+            }
+
+        }
 
     }
 
     @Test
-    void pieceOutOfBounds() throws GameException, StatusException {
-        iBoard board = null;
-        iPiece piece = null;
+    void protocolMachineMoveSuccess() throws GameException, StatusException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        BoardImpl boardSender = new BoardImpl();
+        iPiece piece = new Bauer(Color.White);
 
-        piece.setPosition(7, 5);
+        piece.setPosition(4, 4);
+        BoardProtocolEngine engine = new BoardProtocolEngine(boardSender, baos, null);
+
+        engine.pickColor(ALICE, Color.Black);
+        engine.pickColor(BOB, Color.White);
+
+        int xCoordinate = 4;
+        int yCooridinate = 5;
+
+        boardSender.initializeField();
+        Map<iPlayer, List<iPiece>> map = boardSender.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(piece);
+            }
+        }
+        BoardEngineTester boardMockReceiver = new BoardEngineTester(piece);
+        assertEquals(piece.getPosition().getX(), boardMockReceiver.piece.getPosition().getX());
+        assertEquals(piece.getPosition().getY(), boardMockReceiver.piece.getPosition().getY());
+
+        engine.move(piece,xCoordinate, yCooridinate);
+        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+
+
+        BoardProtocolEngine engineMock = new BoardProtocolEngine(boardMockReceiver,null, bais);
+        engineMock.deserialize();
+
+        assertTrue(boardMockReceiver.lastCallMove);
+        assertEquals(piece.getPosition().getX(), boardMockReceiver.x);
+        assertEquals(piece.getPosition().getY(), boardMockReceiver.y);
+    }
+
+    @Test
+    void pieceOutOfBounds() throws GameException, StatusException {
+        BoardImpl board = new BoardImpl();
+        Dame dame = new Dame(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(dame);
+            }
+        }
+
+        dame.setPosition(7, 5);
 
         assertThrows(GameException.class, () ->{
-            board.move(piece, 8, 5);
+            board.move(dame, 9, 5);
         });
 
-      /*  Position expectedPosition = new Position(7, 5);
-        assertEquals(piece.getPosition().getX(), expectedPosition.getX());
-        assertEquals(piece.getPosition().getY(), expectedPosition.getY());*/
+        Position expectedPosition = new Position(7, 5);
+        assertEquals(dame.getPosition().getX(), expectedPosition.getX());
+        assertEquals(dame.getPosition().getY(), expectedPosition.getY());
 
     }
 
@@ -388,12 +653,16 @@ public class GameEngineTests {
         private boolean lastCallMove = false;
         private boolean lastCallPickColor = false;
 
-        private iPiece piece = null;
+        private iPiece piece;
         private int x = 0;
         private int y = 0;
 
         private String name;
         private Color color;
+
+        BoardEngineTester(iPiece piece){
+            this.piece = piece;
+        }
 
         @Override
         public void initializeField() throws StatusException {

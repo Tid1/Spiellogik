@@ -71,6 +71,7 @@ public class BoardProtocolEngine implements iBoard {
             daos.writeInt(piece.getPosition().getY());
             daos.writeInt(x);
             daos.writeInt(y);
+            board.move(piece, x, y);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -134,6 +135,7 @@ public class BoardProtocolEngine implements iBoard {
                 default:
                     throw new GameException("Color unknown: " + color);
             }
+            board.pickColor(playerName, color);
         } catch (IOException io){
             throw new GameException("Serialization unsuccessful.");
         }
