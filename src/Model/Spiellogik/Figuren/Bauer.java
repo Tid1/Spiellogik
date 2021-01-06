@@ -13,6 +13,10 @@ public class Bauer implements iPiece{
     public Bauer(Color color){
         this.COLOR = color;
     }
+    public Bauer(Color color, Position position){
+        this.COLOR = color;
+        this.position = position;
+    }
 
     @Override
     public Color getColor() {

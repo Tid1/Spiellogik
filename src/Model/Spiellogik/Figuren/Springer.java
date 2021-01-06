@@ -13,6 +13,10 @@ public class Springer implements iPiece{
     public Springer(Color color){
         this.COLOR = color;
     }
+    public Springer(Color color, Position position){
+        this.COLOR = color;
+        this.position = position;
+    }
 
     @Override
     public Color getColor() {

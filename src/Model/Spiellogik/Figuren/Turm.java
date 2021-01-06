@@ -14,6 +14,10 @@ public class Turm implements iPiece{
     public Turm(Color color){
         this.COLOR = color;
     }
+    public Turm(Color color, Position position){
+        this.COLOR = color;
+        this.position = position;
+    }
 
     @Override
     public Color getColor() {

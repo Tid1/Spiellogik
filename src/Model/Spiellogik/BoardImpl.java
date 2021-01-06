@@ -3,16 +3,11 @@ package Model.Spiellogik;
 import Model.Exceptions.GameException;
 import Model.Exceptions.StatusException;
 import Model.Spiellogik.*;
-import Model.Spiellogik.Figuren.Position;
-import Model.Spiellogik.Figuren.Typ;
-import Model.Spiellogik.Figuren.iPiece;
+import Model.Spiellogik.Figuren.*;
 import Model.Spiellogik.MoveSets.MoveSetAssist;
 import javafx.geometry.Pos;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BoardImpl implements iBoard {
     private Map<iPlayer, List<iPiece>> map = new HashMap<>();
@@ -22,19 +17,50 @@ public class BoardImpl implements iBoard {
     private final int LOWERBOUNDS = 1;
     private final int PLAYER_LIMIT = 2;
     private final int FIRST_PLAYER = 0;
-    private int[][] field;
-
-    //COMMIT COMMENT
+    private int checkCount = 0;
+    private List<Position> posiblePositions = new LinkedList<>();
+    private iPiece checkingPiece;
 
     @Override
-    public void initializeField(iPlayer player1, iPlayer player2) throws StatusException {
+    public void initializeField() throws StatusException {
         if (this.status != Status.INIT_FIELD){
             throw new StatusException("Can only be called while game is starting!");
         }
 
-        field = new int[BOUNDS][BOUNDS];
         status = Status.TURN_WHITE;
-        //TODO Spieler ihrer Feldseite zuteilen
+
+        List<iPlayer> playerList = new ArrayList<>(map.keySet());
+        if (playerList.get(0).getColor() == Color.White) {
+            initializeFieldHelper(playerList.get(0), playerList.get(1));
+        } else {
+            initializeFieldHelper(playerList.get(1), playerList.get(0));
+        }
+    }
+
+    private void initializeFieldHelper(iPlayer white, iPlayer black) {
+        List<iPiece> whitePieces = map.get(white);
+        List<iPiece> blackPieces = map.get(black);
+        for (int i=1; i<=8; i++) {
+            whitePieces.add(new Bauer(Color.White, new Position(i, 2)));
+            blackPieces.add(new Bauer(Color.Black, new Position(i, 7)));
+
+            if (i == 1 || i == 8) {
+                whitePieces.add(new Turm(Color.White, new Position(i, 1)));
+                blackPieces.add(new Turm(Color.Black, new Position(i, 8)));
+            } else if (i == 2 || i == 7) {
+                whitePieces.add(new Laeufer(Color.White, new Position(i, 1)));
+                blackPieces.add(new Laeufer(Color.Black, new Position(i, 8)));
+            } else if (i == 3 || i == 6) {
+                whitePieces.add(new Springer(Color.White, new Position(i, 1)));
+                blackPieces.add(new Springer(Color.Black, new Position(i, 8)));
+            } else if (i == 4) {
+                whitePieces.add(new Dame(Color.White, new Position(i, 1)));
+                blackPieces.add(new Dame(Color.Black, new Position(i, 8)));
+            } else if (i == 5) {
+                whitePieces.add(new Koenig(Color.White, new Position(i, 1)));
+                blackPieces.add(new Koenig(Color.Black, new Position(i, 8)));
+            }
+        }
     }
 
     @Override
@@ -179,13 +205,50 @@ public class BoardImpl implements iBoard {
         }
         if (this.status == Status.TURN_WHITE){
             this.status = Status.TURN_BLACK;
+            for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+                if (entry.getKey().getColor() == Color.Black) {
+                    List<iPiece> list = entry.getValue();
+                    for (iPiece piece : list){
+                        if (piece.getType() == Typ.KOENIG) {
+                            this.checkCount = MoveSetAssist.countCheck(this, Color.Black, piece.getPosition());
+                            if (this.checkCount == 1) {
+                                // TODO: Liste erstellen PosiblePositions
+                                this.posiblePositions = MoveSetAssist.getPosiblePositions(this, Color.Black, piece.getPosition());
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            this.status = Status.TURN_WHITE;
+            for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+                if (entry.getKey().getColor() == Color.White) {
+                    List<iPiece> list = entry.getValue();
+                    for (iPiece piece : list){
+                        if (piece.getType() == Typ.KOENIG) {
+                            this.checkCount = MoveSetAssist.countCheck(this, Color.White, piece.getPosition());
+                            if (this.checkCount == 1) {
+                                // TODO: Liste erstellen PosiblePositions
+                                this.posiblePositions = MoveSetAssist.getPosiblePositions(this, Color.White, piece.getPosition());
+                            }
+                        }
+                    }
+                }
+            }
         }
-        this.status = Status.TURN_WHITE;
+
     }
     public int getUPPERBOUNDS() {
         return UPPERBOUNDS;
     }
     public int getLOWERBOUNDS() {
         return LOWERBOUNDS;
+    }
+
+    public void setCheckingPiece(iPiece piece) {
+        this.checkingPiece = piece;
+    }
+    public iPiece getCheckingPiece() {
+        return this.checkingPiece;
     }
 }

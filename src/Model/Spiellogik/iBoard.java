@@ -9,7 +9,7 @@ public interface iBoard {
      * Erzeugt ein 2d Array aus int-Werten
      * @throws StatusException wenn versucht wird die Methode in irgendeinem Zustand der nicht ONE_PICKED ist aufzurufen
      */
-    void initializeField(iPlayer player1, iPlayer player2) throws StatusException;
+    void initializeField() throws StatusException;
 
     /**
      * Prüft, ob sich eine Figur an der Gegebenen Position befindet

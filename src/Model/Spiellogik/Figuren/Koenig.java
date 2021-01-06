@@ -13,6 +13,10 @@ public class Koenig implements iPiece {
     public Koenig(Color color){
         this.COLOR = color;
     }
+    public Koenig(Color color, Position position){
+        this.COLOR = color;
+        this.position = position;
+    }
 
     @Override
     public Color getColor() {

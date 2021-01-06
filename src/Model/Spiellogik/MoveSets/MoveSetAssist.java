@@ -149,6 +149,7 @@ public class MoveSetAssist {
         for (int i=0; i<8; i++) {
             positionBooleanArray[i] = true;
         }
+        board.setCheckingPiece(null);
         for (int i=0; i<8; i++) {
             for (int j=1; j<=board.getUPPERBOUNDS(); j++) {
                 iPiece tempPiece = null;
@@ -253,6 +254,7 @@ public class MoveSetAssist {
                             }
                         }
                     }
+                    board.setCheckingPiece(tempPiece);
                 }
             }
         }
@@ -270,24 +272,28 @@ public class MoveSetAssist {
             tempPiece = board.onField(currentPosition.getX()+x, currentPosition.getY()+y);
             if (checkField(tempPiece, color)) {
                 counter++;
+                board.setCheckingPiece(tempPiece);
             }
         }
         if (currentPosition.getX()+x <= board.getUPPERBOUNDS() && currentPosition.getY()-y <= board.getLOWERBOUNDS()) {
             tempPiece = board.onField(currentPosition.getX()+ x, currentPosition.getY()- y);
             if (checkField(tempPiece, color)) {
                 counter++;
+                board.setCheckingPiece(tempPiece);
             }
         }
         if (currentPosition.getX()-x <= board.getLOWERBOUNDS() && currentPosition.getY()+y <= board.getUPPERBOUNDS()) {
             tempPiece = board.onField(currentPosition.getX()- x, currentPosition.getY()+ y);
             if (checkField(tempPiece, color)) {
                 counter++;
+                board.setCheckingPiece(tempPiece);
             }
         }
         if (currentPosition.getX()-x <= board.getLOWERBOUNDS() && currentPosition.getY()-y <= board.getLOWERBOUNDS()) {
             tempPiece = board.onField(currentPosition.getX()- x, currentPosition.getY()- y);
             if (checkField(tempPiece, color)) {
                 counter++;
+                board.setCheckingPiece(tempPiece);
             }
         }
     }
@@ -299,5 +305,20 @@ public class MoveSetAssist {
             return true;
         }
         return false;
+    }
+
+    public static List<Position> getPosiblePositions(BoardImpl board, Color color, Position currentPosition) {
+        List<Position> posiblePositions = new LinkedList<>();
+        iPiece checkingPiece = board.getCheckingPiece();
+        if (checkingPiece.getType() == Typ.SPRINGER || checkingPiece.getType() == Typ.BAUER) {
+            posiblePositions.add(checkingPiece.getPosition());
+        } else if (checkingPiece.getType() == Typ.LAEUFER) {
+
+        } else if (checkingPiece.getType() == Typ.TURM) {
+
+        } else if (checkingPiece.getType() == Typ.DAME) {
+
+        }
+        return posiblePositions;
     }
 }

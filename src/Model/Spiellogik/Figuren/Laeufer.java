@@ -13,6 +13,10 @@ public class Laeufer implements iPiece{
     public Laeufer(Color color){
         this.COLOR = color;
     }
+    public Laeufer(Color color, Position position){
+        this.COLOR = color;
+        this.position = position;
+    }
 
     @Override
     public Color getColor() {

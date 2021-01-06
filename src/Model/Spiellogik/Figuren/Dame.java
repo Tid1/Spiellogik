@@ -12,6 +12,10 @@ public class Dame implements iPiece{
     public Dame(Color color){
         this.COLOR = color;
     }
+    public Dame(Color color, Position position){
+        this.COLOR = color;
+        this.position = position;
+    }
 
     @Override
     public Color getColor() {
