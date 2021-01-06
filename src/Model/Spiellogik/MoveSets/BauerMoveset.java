@@ -1,5 +1,6 @@
 package Model.Spiellogik.MoveSets;
 
+import Model.Spiellogik.BoardImpl;
 import Model.Spiellogik.Color;
 
 import Model.Spiellogik.Figuren.Position;
@@ -10,10 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class BauerMoveset implements iMoveSet{
-    boolean hasMoved = false;
     Color pieceColor;
     private Position currentPosition;
-    boolean test = false;
     private final int UPPER_BOUNDS = 8;
     private final int LOWER_BOUNDS = 1;
 
@@ -30,7 +29,14 @@ public class BauerMoveset implements iMoveSet{
 
     @Override
     public List<Position> moveSet(iBoard board) {
+        return move((BoardImpl) board);
+    }
+
+    private List<Position> move(BoardImpl board) {
         List<Position> validPostitions = new LinkedList<>();
+        if (board.getCheckCount() >=2) {
+            return new LinkedList<>();
+        }
         switch (pieceColor){
             case White:
                 validPostitions = moveWhite(board);
@@ -41,12 +47,13 @@ public class BauerMoveset implements iMoveSet{
             default:
                 break;
         }
+        if (board.getCheckCount() == 1) {
+            validPostitions = MoveSetAssist.getCheckedValidMoves(validPostitions, board);
+        }
         return validPostitions;
     }
 
-
-    //TODO maybe alle if-Blöcke zu switch-case
-    private List<Position> moveBlack(iBoard board){
+    private List<Position> moveBlack(BoardImpl board){
         List<Position> validPositions = new LinkedList<>();
         if(this.pieceColor == Color.Black){
             if (currentPosition.getY()-SINGLE_MOVE >= LOWER_BOUNDS && currentPosition.getY()-SINGLE_MOVE < UPPER_BOUNDS){
@@ -75,7 +82,7 @@ public class BauerMoveset implements iMoveSet{
         return validPositions;
     }
 
-    private List<Position> moveWhite(iBoard board) {
+    private List<Position> moveWhite(BoardImpl board) {
         List<Position> validPositions = new LinkedList<>();
         if (this.pieceColor == Color.White) {
             if (currentPosition.getY()+SINGLE_MOVE >= LOWER_BOUNDS && currentPosition.getY()+SINGLE_MOVE < UPPER_BOUNDS){

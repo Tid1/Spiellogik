@@ -1,6 +1,8 @@
 package Model.Spiellogik.Figuren;
 
 import Model.Spiellogik.Color;
+import Model.Spiellogik.MoveSets.BauerMoveset;
+import Model.Spiellogik.MoveSets.DameMoveset;
 import Model.Spiellogik.MoveSets.iMoveSet;
 
 public class Dame implements iPiece{
@@ -54,6 +56,6 @@ public class Dame implements iPiece{
 
     @Override
     public iMoveSet getMoveset() {
-        return null;
+        return new DameMoveset(COLOR, this.position);
     }
 }

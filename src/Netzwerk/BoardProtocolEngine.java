@@ -51,8 +51,8 @@ public class BoardProtocolEngine implements iBoard {
     }
 
     @Override
-    public void initializeField(iPlayer player1, iPlayer player2) throws StatusException {
-        //Kann leer bleiben, wird nicht gebraucht
+    public void initializeField() throws StatusException {
+
     }
 
     @Override
@@ -105,10 +105,10 @@ public class BoardProtocolEngine implements iBoard {
     }
 
     @Override
-    public boolean checkStalemate() {
-        //Kann leer bleiben
+    public boolean checkStalemate(iPlayer player) {
         return false;
     }
+
 
     @Override
     public boolean checkValidMove(iPiece piece, int x, int y) throws GameException {

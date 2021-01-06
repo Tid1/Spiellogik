@@ -20,16 +20,21 @@ public class SpringerMoveset implements iMoveSet{
 
     @Override
     public List<Position> moveSet(iBoard board) {
-        return move(board);
+        return move((BoardImpl) board);
     }
 
     //TODO macht das Sinn alles in diese Liste einzutragen und das Board filtert out of bounds sachen?
-    private List<Position> move(iBoard board){
+    private List<Position> move(BoardImpl board){
         List<Position> validMoves = new LinkedList<>();
 
-        tempMethod((BoardImpl) board, validMoves, NOTMAGICTWO, NOTMAGICONE);
-
-        tempMethod((BoardImpl) board, validMoves, NOTMAGICONE, NOTMAGICTWO);
+        if (board.getCheckCount() >=2) {
+            return new LinkedList<>();
+        }
+        tempMethod(board, validMoves, NOTMAGICTWO, NOTMAGICONE);
+        tempMethod(board, validMoves, NOTMAGICONE, NOTMAGICTWO);
+        if (board.getCheckCount() == 1) {
+            validMoves = MoveSetAssist.getCheckedValidMoves(validMoves, board);
+        }
         return validMoves;
     }
 

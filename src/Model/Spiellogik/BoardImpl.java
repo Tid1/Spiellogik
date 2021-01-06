@@ -213,7 +213,7 @@ public class BoardImpl implements iBoard {
                             this.checkCount = MoveSetAssist.countCheck(this, Color.Black, piece.getPosition());
                             if (this.checkCount == 1) {
                                 // TODO: Liste erstellen PosiblePositions
-                                this.posiblePositions = MoveSetAssist.getPosiblePositions(this, Color.Black, piece.getPosition());
+                                this.posiblePositions = MoveSetAssist.getPosiblePositions(this, piece.getPosition());
                             }
                         }
                     }
@@ -229,7 +229,7 @@ public class BoardImpl implements iBoard {
                             this.checkCount = MoveSetAssist.countCheck(this, Color.White, piece.getPosition());
                             if (this.checkCount == 1) {
                                 // TODO: Liste erstellen PosiblePositions
-                                this.posiblePositions = MoveSetAssist.getPosiblePositions(this, Color.White, piece.getPosition());
+                                this.posiblePositions = MoveSetAssist.getPosiblePositions(this, piece.getPosition());
                             }
                         }
                     }
@@ -245,10 +245,18 @@ public class BoardImpl implements iBoard {
         return LOWERBOUNDS;
     }
 
+    public int getCheckCount() {
+        return checkCount;
+    }
+
+    public List<Position> getPosiblePositions() {
+        return posiblePositions;
+    }
+
     public void setCheckingPiece(iPiece piece) {
         this.checkingPiece = piece;
     }
     public iPiece getCheckingPiece() {
-        return this.checkingPiece;
+        return checkingPiece;
     }
 }

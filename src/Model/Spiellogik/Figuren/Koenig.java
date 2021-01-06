@@ -1,6 +1,8 @@
 package Model.Spiellogik.Figuren;
 
 import Model.Spiellogik.Color;
+import Model.Spiellogik.MoveSets.BauerMoveset;
+import Model.Spiellogik.MoveSets.KoenigMoveset;
 import Model.Spiellogik.MoveSets.iMoveSet;
 
 public class Koenig implements iPiece {
@@ -55,7 +57,7 @@ public class Koenig implements iPiece {
 
     @Override
     public iMoveSet getMoveset() {
-        return null;
+        return new KoenigMoveset(COLOR, this.position);
     }
 
     public boolean hasMoved() {

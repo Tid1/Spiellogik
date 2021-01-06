@@ -315,8 +315,8 @@ public class GameEngineTests {
         private Color color;
 
         @Override
-        public void initializeField(iPlayer player1, iPlayer player2) throws StatusException {
-            //Kann leer bleiben
+        public void initializeField() throws StatusException {
+
         }
 
         @Override
@@ -348,8 +348,7 @@ public class GameEngineTests {
         }
 
         @Override
-        public boolean checkStalemate() {
-            //Kann leer bleiben
+        public boolean checkStalemate(iPlayer player) {
             return false;
         }
 

@@ -20,12 +20,18 @@ public class LaeuferMoveset implements iMoveSet{
 
     @Override
     public List<Position> moveSet(iBoard board) {
-        return move(board);
+        return move((BoardImpl) board);
     }
 
     //TODO JOSHUA NACH IMPLEMENTIERUNG FRAGEN
-    private List<Position> move(iBoard board){
-        List<Position> validMoves = MoveSetAssist.getDiagonalMoveset((BoardImpl) board, pieceColor, currentPosition);
+    private List<Position> move(BoardImpl board){
+        if (board.getCheckCount() >=2) {
+            return new LinkedList<>();
+        }
+        List<Position> validMoves = MoveSetAssist.getDiagonalMoveset(board, pieceColor, currentPosition);
+        if (board.getCheckCount() == 1) {
+            validMoves = MoveSetAssist.getCheckedValidMoves(validMoves, board);
+        }
         return validMoves;
     }
 }

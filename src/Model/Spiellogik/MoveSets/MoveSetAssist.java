@@ -4,6 +4,7 @@ import Model.Spiellogik.*;
 import Model.Spiellogik.Figuren.Position;
 import Model.Spiellogik.Figuren.Typ;
 import Model.Spiellogik.Figuren.iPiece;
+import javafx.geometry.Pos;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -307,18 +308,97 @@ public class MoveSetAssist {
         return false;
     }
 
-    public static List<Position> getPosiblePositions(BoardImpl board, Color color, Position currentPosition) {
+    public static List<Position> getPosiblePositions(BoardImpl board, Position currentPosition) {
         List<Position> posiblePositions = new LinkedList<>();
         iPiece checkingPiece = board.getCheckingPiece();
+        int i=0;
         if (checkingPiece.getType() == Typ.SPRINGER || checkingPiece.getType() == Typ.BAUER) {
             posiblePositions.add(checkingPiece.getPosition());
         } else if (checkingPiece.getType() == Typ.LAEUFER) {
-
+            getPosibleDiagonalPositions(currentPosition, posiblePositions, checkingPiece, i);
         } else if (checkingPiece.getType() == Typ.TURM) {
+            getPosibleHorizontalVerticalPositions(currentPosition, posiblePositions, checkingPiece, i);
 
         } else if (checkingPiece.getType() == Typ.DAME) {
-
+            if (currentPosition.getX() == checkingPiece.getPosition().getX() || currentPosition.getY() == checkingPiece.getPosition().getY()) {
+                getPosibleHorizontalVerticalPositions(currentPosition, posiblePositions, checkingPiece, i);
+            } else {
+                getPosibleDiagonalPositions(currentPosition, posiblePositions, checkingPiece, i);
+            }
         }
         return posiblePositions;
+    }
+
+    private static void getPosibleHorizontalVerticalPositions(Position currentPosition, List<Position> posiblePositions, iPiece checkingPiece, int i) {
+        if (currentPosition.getX() == checkingPiece.getPosition().getX()) {
+            if (currentPosition.getY()<checkingPiece.getPosition().getY()) {
+                while (!(checkingPiece.getPosition().getY()-i == currentPosition.getY())) {
+                    posiblePositions.add(new Position(checkingPiece.getPosition().getX(), checkingPiece.getPosition().getY()-i));
+                    i++;
+                }
+            } else {
+                while (!(checkingPiece.getPosition().getY()+i == currentPosition.getY())) {
+                    posiblePositions.add(new Position(checkingPiece.getPosition().getX(), checkingPiece.getPosition().getY()+i));
+                    i++;
+                }
+            }
+        } else {
+            if (currentPosition.getX()<checkingPiece.getPosition().getX()) {
+                while (!(checkingPiece.getPosition().getX()-i == currentPosition.getX())) {
+                    posiblePositions.add(new Position(checkingPiece.getPosition().getX()-i, checkingPiece.getPosition().getY()));
+                    i++;
+                }
+            } else {
+                while (!(checkingPiece.getPosition().getY()+i == currentPosition.getY())) {
+                    posiblePositions.add(new Position(checkingPiece.getPosition().getX()+i, checkingPiece.getPosition().getY()));
+                    i++;
+                }
+            }
+        }
+    }
+
+    private static void getPosibleDiagonalPositions(Position currentPosition, List<Position> posiblePositions, iPiece checkingPiece, int i) {
+        if (currentPosition.getX()<checkingPiece.getPosition().getX()) { // Koenig links vom Dame
+            if (currentPosition.getY()<checkingPiece.getPosition().getY()) { // Koenig unterhalb Dame
+                while (!(checkingPiece.getPosition().getX()-i == currentPosition.getX()
+                        && checkingPiece.getPosition().getY()-i == currentPosition.getY())) {
+                    posiblePositions.add(new Position(checkingPiece.getPosition().getX()-i, checkingPiece.getPosition().getY()-i));
+                    i++;
+                }
+            } else { // Koenig oberhalb Dame
+                while (!(checkingPiece.getPosition().getX()-i == currentPosition.getX()
+                        && checkingPiece.getPosition().getY()+i == currentPosition.getY())) {
+                    posiblePositions.add(new Position(checkingPiece.getPosition().getX()-i, checkingPiece.getPosition().getY()+i));
+                    i++;
+                }
+            }
+        } else { // Koenig rechts vom Dame
+            if (currentPosition.getY()<checkingPiece.getPosition().getY()) { // Koenig unterhalb Dame
+                while (!(checkingPiece.getPosition().getX()+i == currentPosition.getX()
+                        && checkingPiece.getPosition().getY()-i == currentPosition.getY())) {
+                    posiblePositions.add(new Position(checkingPiece.getPosition().getX()+i, checkingPiece.getPosition().getY()-i));
+                    i++;
+                }
+            } else { // Koenig oberhalb Dame
+                while (!(checkingPiece.getPosition().getX()+i == currentPosition.getX()
+                        && checkingPiece.getPosition().getY()+i == currentPosition.getY())) {
+                    posiblePositions.add(new Position(checkingPiece.getPosition().getX()+i, checkingPiece.getPosition().getY()+i));
+                    i++;
+                }
+            }
+        }
+    }
+
+    public static List<Position> getCheckedValidMoves(List<Position> validMoves, BoardImpl board) {
+        List<Position> posiblePositions = board.getPosiblePositions();
+        List<Position> returnList = new LinkedList<>();
+        for (Position valid : validMoves) {
+            for (Position posible : posiblePositions) {
+                if (valid == posible) {
+                    returnList.add(posible);
+                }
+            }
+        }
+        return returnList;
     }
 }

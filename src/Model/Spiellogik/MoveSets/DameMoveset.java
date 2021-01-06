@@ -4,17 +4,16 @@ import Model.Spiellogik.BoardImpl;
 import Model.Spiellogik.Color;
 import Model.Spiellogik.Figuren.Position;
 import Model.Spiellogik.iBoard;
-import javafx.geometry.Pos;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class TurmMoveset implements iMoveSet{
+public class DameMoveset implements iMoveSet{
     private Color pieceColor;
     private Position currentPosition;
 
-    public TurmMoveset(Color color, Position currentPosition){
-        this.pieceColor = color;
+    public DameMoveset(Color pieceColor, Position currentPosition) {
+        this.pieceColor = pieceColor;
         this.currentPosition = currentPosition;
     }
 
@@ -27,11 +26,13 @@ public class TurmMoveset implements iMoveSet{
         if (board.getCheckCount() >=2) {
             return new LinkedList<>();
         }
-        List<Position> validMoves = MoveSetAssist.getHorizontalVerticalMoveset(board, pieceColor, currentPosition);
+        List<Position> validMoves = MoveSetAssist.getDiagonalMoveset(board, pieceColor, currentPosition);
+        for (Position position : MoveSetAssist.getHorizontalVerticalMoveset(board, pieceColor, currentPosition)) {
+            validMoves.add(position);
+        }
         if (board.getCheckCount() == 1) {
             validMoves = MoveSetAssist.getCheckedValidMoves(validMoves, board);
         }
         return validMoves;
     }
-
 }
