@@ -80,7 +80,7 @@ public class BoardImpl implements iBoard {
     @Override
     public void move(iPiece piece, int x, int y) throws GameException, StatusException {
         if (this.status == Status.TURN_BLACK && piece.getColor() != Color.Black ||
-            this.status == Status.TURN_WHITE && piece.getColor() != Color.White){
+                this.status == Status.TURN_WHITE && piece.getColor() != Color.White){
             throw new StatusException("Wrong players turn");
         }
         if (checkValidMove(piece, x, y)) {
@@ -101,6 +101,7 @@ public class BoardImpl implements iBoard {
             }
             piece.setPosition(x, y);
             changeTurns();
+            return;
         }
         throw new GameException("Illegal Move");
     }
@@ -258,5 +259,9 @@ public class BoardImpl implements iBoard {
     }
     public iPiece getCheckingPiece() {
         return checkingPiece;
+    }
+
+    public Map<iPlayer, List<iPiece>> getMap(){
+        return map;
     }
 }

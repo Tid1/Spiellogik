@@ -56,7 +56,7 @@ public class BauerMoveset implements iMoveSet{
     private List<Position> moveBlack(BoardImpl board){
         List<Position> validPositions = new LinkedList<>();
         if(this.pieceColor == Color.Black){
-            if (currentPosition.getY()-SINGLE_MOVE >= LOWER_BOUNDS && currentPosition.getY()-SINGLE_MOVE < UPPER_BOUNDS){
+            if (currentPosition.getY()-SINGLE_MOVE >= LOWER_BOUNDS && currentPosition.getY()-SINGLE_MOVE <= UPPER_BOUNDS){
                 if (board.onField(currentPosition.getX(), currentPosition.getY()- SINGLE_MOVE) == null){
                     validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()-SINGLE_MOVE));
                 }
@@ -72,7 +72,7 @@ public class BauerMoveset implements iMoveSet{
                     validPositions.add(new Position(currentPosition.getX()-SINGLE_MOVE, currentPosition.getY()-SINGLE_MOVE));
                 }
             }
-            if (currentPosition.getX() + SINGLE_MOVE < UPPER_BOUNDS){
+            if (currentPosition.getX() + SINGLE_MOVE <= UPPER_BOUNDS){
                 iPiece pieceOnField = board.onField(currentPosition.getX()+SINGLE_MOVE, currentPosition.getY()-SINGLE_MOVE);
                 if (pieceOnField != null && pieceOnField.getColor() == Color.White){
                     validPositions.add(new Position(currentPosition.getX()+SINGLE_MOVE, currentPosition.getY()-SINGLE_MOVE));
@@ -85,7 +85,7 @@ public class BauerMoveset implements iMoveSet{
     private List<Position> moveWhite(BoardImpl board) {
         List<Position> validPositions = new LinkedList<>();
         if (this.pieceColor == Color.White) {
-            if (currentPosition.getY()+SINGLE_MOVE >= LOWER_BOUNDS && currentPosition.getY()+SINGLE_MOVE < UPPER_BOUNDS){
+            if (currentPosition.getY()+SINGLE_MOVE >= LOWER_BOUNDS && currentPosition.getY()+SINGLE_MOVE <= UPPER_BOUNDS){
                 if (board.onField(currentPosition.getX(), currentPosition.getY()+SINGLE_MOVE) == null){
                     validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()+SINGLE_MOVE));
                 }
@@ -97,13 +97,13 @@ public class BauerMoveset implements iMoveSet{
             }
             if (currentPosition.getX() - SINGLE_MOVE >= LOWER_BOUNDS){
                 iPiece pieceOnField = board.onField(currentPosition.getX()-SINGLE_MOVE, currentPosition.getY()+SINGLE_MOVE);
-                if (pieceOnField != null && pieceOnField.getColor() == Color.White){
+                if (pieceOnField != null && pieceOnField.getColor() == Color.Black){
                     validPositions.add(new Position(currentPosition.getX()-SINGLE_MOVE, currentPosition.getY()+SINGLE_MOVE));
                 }
             }
-            if (currentPosition.getX() + SINGLE_MOVE < UPPER_BOUNDS){
+            if (currentPosition.getX() + SINGLE_MOVE <= UPPER_BOUNDS){
                 iPiece pieceOnField = board.onField(currentPosition.getX()+SINGLE_MOVE, currentPosition.getY()+SINGLE_MOVE);
-                if (pieceOnField != null && pieceOnField.getColor() == Color.White){
+                if (pieceOnField != null && pieceOnField.getColor() == Color.Black){
                     validPositions.add(new Position(currentPosition.getX()+SINGLE_MOVE, currentPosition.getY()+SINGLE_MOVE));
                 }
             }

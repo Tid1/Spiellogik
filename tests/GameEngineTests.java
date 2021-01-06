@@ -1,21 +1,48 @@
 import Model.Exceptions.GameException;
 import Model.Exceptions.StatusException;
-import Model.Spiellogik.Color;
-import Model.Spiellogik.Figuren.Position;
-import Model.Spiellogik.Figuren.Typ;
-import Model.Spiellogik.Figuren.iPiece;
-import Model.Spiellogik.Status;
-import Model.Spiellogik.iBoard;
-import Model.Spiellogik.iPlayer;
+import Model.Spiellogik.*;
+import Model.Spiellogik.Figuren.*;
 import Netzwerk.BoardProtocolEngine;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameEngineTests {
+    private final String ALICE = "Alice";
+    private final String BOB = "Bob";
+    private final String CHARLIE = "Charlie";
+
+    @Test
+    void pickColorTestSuccess() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+        int expectedSize = 2;
+
+        assertEquals(board.getMap().size(), expectedSize);
+        List<iPlayer> players = new ArrayList<>(board.getMap().keySet());
+        assertEquals(players.size(), expectedSize);
+
+        iPlayer player1 = players.get(0);
+        iPlayer player2 = players.get(1);
+
+        assertNotEquals(player1.getColor(), player2.getColor());
+    }
+
+    @Test
+    void pickColorTestThreePeople() throws StatusException {
+        BoardImpl board = new BoardImpl();
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        assertThrows(StatusException.class, () -> {
+            board.pickColor(CHARLIE, Color.White);
+        });
+    }
 
     @Test
     void bauerStartSingleMove() throws GameException, StatusException {
@@ -34,13 +61,25 @@ public class GameEngineTests {
 
     @Test
     void bauerSingleMoveNotStart() throws GameException, StatusException {
-        iBoard board = null;
-        iPiece bauer = null;
+        BoardImpl board = new BoardImpl();
+        Bauer bauer = new Bauer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(bauer);
+            }
+        }
 
         bauer.setPosition(4,5);
-        board.move(bauer, 5, 5);
+        board.move(bauer, 4, 6);
 
-        Position expectedPosition = new Position(5,5);
+        Position expectedPosition = new Position(4,6);
 
         assertEquals(bauer.getPosition().getX(), expectedPosition.getX());
         assertEquals(bauer.getPosition().getY(), expectedPosition.getY());
@@ -48,13 +87,24 @@ public class GameEngineTests {
 
     @Test
     void bauerDoubleMoveStart() throws GameException, StatusException {
-        iBoard board = null;
-        iPiece bauer = null;
+        BoardImpl board = new BoardImpl();
+        Bauer bauer = new Bauer(Color.White);
 
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(bauer);
+            }
+        }
         bauer.setPosition(2,2);
-        board.move(bauer, 4, 2);
+        board.move(bauer, 2, 4);
 
-        Position expectedPosition = new Position(4,2);
+        Position expectedPosition = new Position(2,4);
 
         assertEquals(bauer.getPosition().getX(), expectedPosition.getX());
         assertEquals(bauer.getPosition().getY(), expectedPosition.getY());
@@ -62,26 +112,57 @@ public class GameEngineTests {
 
     @Test
     void bauerBlocked() throws GameException, StatusException {
-        iBoard board = null;
-        iPiece bauerWhite = null;
-        iPiece figur = null;
+        BoardImpl board = new BoardImpl();
+        Bauer bauer = new Bauer(Color.White);
+        iPiece figur = new Laeufer(Color.White);
 
-        bauerWhite.setPosition(4, 4);
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(bauer);
+                entry.getValue().add(figur);
+            }
+        }
+
+        bauer.setPosition(4, 4);
         figur.setPosition(5,4);
 
-        board.move(bauerWhite, 5, 4);
+        assertThrows(GameException.class, () -> {
+            board.move(bauer, 5, 4);
+        });
 
         Position expectedPosition = new Position(4, 4);
 
-        assertEquals(bauerWhite.getPosition().getX(), expectedPosition.getX());
-        assertEquals(bauerWhite.getPosition().getY(), expectedPosition.getY());
+        assertEquals(bauer.getPosition().getX(), expectedPosition.getX());
+        assertEquals(bauer.getPosition().getY(), expectedPosition.getY());
     }
 
     @Test
     void bauerGeschlagenGut() throws GameException, StatusException {
-        iBoard board = null;
-        iPiece bauerWhite = null;
-        iPiece bauerBlack = null;
+        BoardImpl board = new BoardImpl();
+
+        iPiece bauerWhite = new Bauer(Color.White);
+        iPiece bauerBlack = new Bauer(Color.Black);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(bauerWhite);
+            } else {
+                entry.getValue().add(bauerBlack);
+            }
+        }
+
 
         bauerWhite.setPosition(4, 4);
         bauerBlack.setPosition(5, 5);
