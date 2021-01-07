@@ -30,15 +30,15 @@ public class SpringerMoveset implements iMoveSet{
         if (board.getCheckCount() >=2) {
             return new LinkedList<>();
         }
-        tempMethod(board, validMoves, NOTMAGICTWO, NOTMAGICONE);
-        tempMethod(board, validMoves, NOTMAGICONE, NOTMAGICTWO);
+        springerMove(board, validMoves, NOTMAGICTWO, NOTMAGICONE);
+        springerMove(board, validMoves, NOTMAGICONE, NOTMAGICTWO);
         if (board.getCheckCount() == 1) {
             validMoves = MoveSetAssist.getCheckedValidMoves(validMoves, board);
         }
         return validMoves;
     }
 
-    private void tempMethod(BoardImpl board, List<Position> validMoves, int notmagicone, int notmagictwo) {
+    private void springerMove(BoardImpl board, List<Position> validMoves, int notmagicone, int notmagictwo) {
         iPiece tempPiece = null;
         if (currentPosition.getX()+notmagicone <= board.getUPPERBOUNDS() && currentPosition.getY()+notmagictwo <= board.getUPPERBOUNDS()) {
             tempPiece = board.onField(currentPosition.getX()+notmagicone, currentPosition.getY()+notmagictwo);
@@ -46,19 +46,19 @@ public class SpringerMoveset implements iMoveSet{
                 validMoves.add(new Position(currentPosition.getX()+ notmagicone, currentPosition.getY()+ notmagictwo));
             }
         }
-        if (currentPosition.getX()+notmagicone <= board.getUPPERBOUNDS() && currentPosition.getY()-notmagictwo <= board.getLOWERBOUNDS()) {
+        if (currentPosition.getX()+notmagicone <= board.getUPPERBOUNDS() && currentPosition.getY()-notmagictwo >= board.getLOWERBOUNDS()) {
             tempPiece = board.onField(currentPosition.getX()+ notmagicone, currentPosition.getY()- notmagictwo);
             if (checkField(tempPiece)) {
                 validMoves.add(new Position(currentPosition.getX()+ notmagicone, currentPosition.getY()- notmagictwo));
             }
         }
-        if (currentPosition.getX()-notmagicone <= board.getLOWERBOUNDS() && currentPosition.getY()+notmagictwo <= board.getUPPERBOUNDS()) {
+        if (currentPosition.getX()-notmagicone >= board.getLOWERBOUNDS() && currentPosition.getY()+notmagictwo <= board.getUPPERBOUNDS()) {
             tempPiece = board.onField(currentPosition.getX()- notmagicone, currentPosition.getY()+ notmagictwo);
             if (checkField(tempPiece)) {
                 validMoves.add(new Position(currentPosition.getX()- notmagicone, currentPosition.getY()+ notmagictwo));
             }
         }
-        if (currentPosition.getX()-notmagicone <= board.getLOWERBOUNDS() && currentPosition.getY()-notmagictwo <= board.getLOWERBOUNDS()) {
+        if (currentPosition.getX()-notmagicone >= board.getLOWERBOUNDS() && currentPosition.getY()-notmagictwo >= board.getLOWERBOUNDS()) {
             tempPiece = board.onField(currentPosition.getX()- notmagicone, currentPosition.getY()- notmagictwo);
             if (checkField(tempPiece)) {
                 validMoves.add(new Position(currentPosition.getX()- notmagicone, currentPosition.getY()- notmagictwo));

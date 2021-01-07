@@ -92,7 +92,7 @@ public class BoardImpl implements iBoard {
                 }
                 pieceOnField.setCaputred(true);
             }
-            if (piece.getType() == Typ.KOENIG) {
+            if (piece.getType() == Typ.KOENIG) { //Rochade
                 if (piece.getPosition().getX()-x == 2) {
                     onField(1, piece.getPosition().getY()).setPosition(4, piece.getPosition().getY());
                 }
@@ -101,7 +101,7 @@ public class BoardImpl implements iBoard {
                 }
             }
 
-            if (piece.getType() == Typ.BAUER){
+            if (piece.getType() == Typ.BAUER){ //Transformation zu Dame
                 List<iPiece> pieces;
                 if (piece.getColor() == Color.Black && y == LOWERBOUNDS){
                     for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
@@ -123,6 +123,19 @@ public class BoardImpl implements iBoard {
                 }
             }
 
+            if (onField(x, y) != null){
+                for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+                    if (entry.getKey().getColor() != piece.getColor()){
+                        List<iPiece> deletePiece = entry.getValue();
+                        for (iPiece pieceToDelete : deletePiece){
+                            if (pieceToDelete == onField(x, y)){
+                                deletePiece.remove(pieceToDelete);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
             piece.setPosition(x, y);
             changeTurns();
             return;

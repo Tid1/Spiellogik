@@ -16,7 +16,7 @@ public class MoveSetAssist {
         boolean tr=true, tl=true, br=true, bl=true;
         for (int i = 1; i<=board.getUPPERBOUNDS(); i++){
             if (tr) {
-                if (currentPosition.getX()+i>board.getUPPERBOUNDS() || currentPosition.getY()+i>board.getUPPERBOUNDS()) {
+                if (currentPosition.getX()+i > board.getUPPERBOUNDS() || currentPosition.getY()+i > board.getUPPERBOUNDS()) {
                     tr=false;
                 } else {
                     if (board.onField(currentPosition.getX()+i, currentPosition.getY()+i) == null) {
@@ -30,7 +30,7 @@ public class MoveSetAssist {
                 }
             }
             if (tl) {
-                if (currentPosition.getX()-i>board.getLOWERBOUNDS() || currentPosition.getY()+i>board.getUPPERBOUNDS()) {
+                if (currentPosition.getX()-i < board.getLOWERBOUNDS() || currentPosition.getY()+i > board.getUPPERBOUNDS()) {
                     tl=false;
                 } else {
                     if (board.onField(currentPosition.getX()-i, currentPosition.getY()+i) == null) {
@@ -44,7 +44,7 @@ public class MoveSetAssist {
                 }
             }
             if (br) {
-                if (currentPosition.getX()+i>board.getUPPERBOUNDS() || currentPosition.getY()-i>board.getLOWERBOUNDS()) {
+                if (currentPosition.getX()+i>board.getUPPERBOUNDS() || currentPosition.getY()-i<board.getLOWERBOUNDS()) {
                     br=false;
                 } else {
                     if (board.onField(currentPosition.getX()+i, currentPosition.getY()-i) == null) {
@@ -58,7 +58,7 @@ public class MoveSetAssist {
                 }
             }
             if (bl) {
-                if (currentPosition.getX()-i>board.getLOWERBOUNDS() || currentPosition.getY()-i>board.getLOWERBOUNDS()) {
+                if (currentPosition.getX()-i<board.getLOWERBOUNDS() || currentPosition.getY()-i<board.getLOWERBOUNDS()) {
                     bl=false;
                 } else {
                     if (board.onField(currentPosition.getX()-i, currentPosition.getY()-i) == null) {
@@ -276,21 +276,21 @@ public class MoveSetAssist {
                 board.setCheckingPiece(tempPiece);
             }
         }
-        if (currentPosition.getX()+x <= board.getUPPERBOUNDS() && currentPosition.getY()-y <= board.getLOWERBOUNDS()) {
+        if (currentPosition.getX()+x <= board.getUPPERBOUNDS() && currentPosition.getY()-y >= board.getLOWERBOUNDS()) {
             tempPiece = board.onField(currentPosition.getX()+ x, currentPosition.getY()- y);
             if (checkField(tempPiece, color)) {
                 counter++;
                 board.setCheckingPiece(tempPiece);
             }
         }
-        if (currentPosition.getX()-x <= board.getLOWERBOUNDS() && currentPosition.getY()+y <= board.getUPPERBOUNDS()) {
+        if (currentPosition.getX()-x >= board.getLOWERBOUNDS() && currentPosition.getY()+y <= board.getUPPERBOUNDS()) {
             tempPiece = board.onField(currentPosition.getX()- x, currentPosition.getY()+ y);
             if (checkField(tempPiece, color)) {
                 counter++;
                 board.setCheckingPiece(tempPiece);
             }
         }
-        if (currentPosition.getX()-x <= board.getLOWERBOUNDS() && currentPosition.getY()-y <= board.getLOWERBOUNDS()) {
+        if (currentPosition.getX()-x >= board.getLOWERBOUNDS() && currentPosition.getY()-y >= board.getLOWERBOUNDS()) {
             tempPiece = board.onField(currentPosition.getX()- x, currentPosition.getY()- y);
             if (checkField(tempPiece, color)) {
                 counter++;

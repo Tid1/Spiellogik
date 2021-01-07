@@ -383,7 +383,7 @@ public class GameEngineTests {
     }
 
     @Test
-    void turmMoveSuccessX() throws GameException, StatusException {
+    void turmMoveSuccessRight() throws GameException, StatusException {
         BoardImpl board = new BoardImpl();
         Turm turm = new Turm(Color.White);
 
@@ -410,7 +410,7 @@ public class GameEngineTests {
     }
 
     @Test
-    void turmMoveUnsuccessfulX() throws GameException, StatusException {
+    void turmMoveUnsuccessfulRight() throws GameException, StatusException {
         BoardImpl board = new BoardImpl();
         Bauer ranPiece = new Bauer(Color.White);
         Turm turm = new Turm(Color.White);
@@ -443,7 +443,67 @@ public class GameEngineTests {
     }
 
     @Test
-    void turmMoveSuccessY() throws GameException, StatusException {
+    void turmMoveSuccessLeft() throws GameException, StatusException {
+        BoardImpl board = new BoardImpl();
+        Turm turm = new Turm(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(turm);
+            }
+        }
+
+        turm.setPosition(6,3);
+        board.move(turm, 3, 3);
+
+        Position expected = new Position(3, 3);
+
+        assertEquals(turm.getPosition().getX(), expected.getX());
+        assertEquals(turm.getPosition().getY(), expected.getY());
+    }
+
+    @Test
+    void turmMoveUnsuccessfulLeft() throws GameException, StatusException {
+        BoardImpl board = new BoardImpl();
+        Bauer ranPiece = new Bauer(Color.White);
+        Turm turm = new Turm(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()) {
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White) {
+                entry.getValue().add(ranPiece);
+                entry.getValue().add(turm);
+            }
+        }
+
+        turm.setPosition(6,3);
+        ranPiece.setPosition(5, 3);
+
+        assertThrows(GameException.class, () -> {
+            board.move(turm, 3, 3);
+        });
+
+        Position expected = new Position(6, 3);
+
+        assertEquals(turm.getPosition().getX(), expected.getX());
+        assertEquals(turm.getPosition().getY(), expected.getY());
+    }
+
+    @Test
+    void turmMoveSuccessUp() throws GameException, StatusException {
         BoardImpl board = new BoardImpl();
         Turm turm = new Turm(Color.White);
 
@@ -470,7 +530,7 @@ public class GameEngineTests {
     }
 
     @Test
-    void turmMoveUnsuccessfulY() throws GameException, StatusException {
+    void turmMoveUnsuccessfulUp() throws GameException, StatusException {
         BoardImpl board = new BoardImpl();
         Turm turm = new Turm(Color.White);
         Bauer ranPiece = new Bauer(Color.White);
@@ -497,6 +557,66 @@ public class GameEngineTests {
         });
 
         Position expected = new Position(3, 3);
+
+        assertEquals(turm.getPosition().getX(), expected.getX());
+        assertEquals(turm.getPosition().getY(), expected.getY());
+    }
+
+    @Test
+    void turmMoveSuccessDown() throws GameException, StatusException {
+        BoardImpl board = new BoardImpl();
+        Turm turm = new Turm(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(turm);
+            }
+        }
+        turm.setPosition(3,6);
+
+        board.move(turm, 3, 3);
+
+        Position expected = new Position(3, 3);
+
+        assertEquals(turm.getPosition().getX(), expected.getX());
+        assertEquals(turm.getPosition().getY(), expected.getY());
+    }
+
+    @Test
+    void turmMoveUnsuccessfulDown() throws GameException, StatusException {
+        BoardImpl board = new BoardImpl();
+        Turm turm = new Turm(Color.White);
+        Bauer ranPiece = new Bauer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(turm);
+                entry.getValue().add(ranPiece);
+            }
+        }
+
+        turm.setPosition(3,6);
+        ranPiece.setPosition(3, 5);
+
+        assertThrows(GameException.class, () -> {
+            board.move(turm, 3, 3);
+        });
+
+        Position expected = new Position(3, 6);
 
         assertEquals(turm.getPosition().getX(), expected.getX());
         assertEquals(turm.getPosition().getY(), expected.getY());
@@ -580,6 +700,830 @@ public class GameEngineTests {
     }
 
     @Test
+    void pieceOutOfBounds() throws GameException, StatusException {
+        BoardImpl board = new BoardImpl();
+        Dame dame = new Dame(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(dame);
+            }
+        }
+
+        dame.setPosition(7, 5);
+
+        assertThrows(GameException.class, () ->{
+            board.move(dame, 9, 5);
+        });
+
+        Position expectedPosition = new Position(7, 5);
+        assertEquals(dame.getPosition().getX(), expectedPosition.getX());
+        assertEquals(dame.getPosition().getY(), expectedPosition.getY());
+
+    }
+
+    @Test
+    void testLaeuferSuccessTopRight() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Laeufer lauefer = new Laeufer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(lauefer);
+            }
+        }
+
+        lauefer.setPosition(2, 2);
+        board.move(lauefer, 4, 4);
+        Position expectedPosition = new Position(4, 4);
+
+        assertEquals(expectedPosition.getX(), lauefer.getPosition().getX());
+        assertEquals(expectedPosition.getY(), lauefer.getPosition().getY());
+    }
+
+    @Test
+    void testLaeuferUnsuccessfulTopRight() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Laeufer lauefer = new Laeufer(Color.White);
+        Bauer ranPiece = new Bauer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(lauefer);
+                entry.getValue().add(ranPiece);
+            }
+        }
+
+        lauefer.setPosition(2, 2);
+        ranPiece.setPosition(3, 3);
+
+        assertThrows(GameException.class, () -> {
+            board.move(lauefer, 4, 4);
+        });
+
+        Position expectedPosition = new Position(2, 2);
+        assertEquals(expectedPosition.getX(), lauefer.getPosition().getX());
+        assertEquals(expectedPosition.getY(), lauefer.getPosition().getY());
+    }
+
+    @Test
+    void testLaeuferSuccessDownLeft() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Laeufer lauefer = new Laeufer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(lauefer);
+            }
+        }
+
+        lauefer.setPosition(4, 4);
+        board.move(lauefer, 2, 2);
+        Position expectedPosition = new Position(2, 2);
+
+        assertEquals(expectedPosition.getX(), lauefer.getPosition().getX());
+        assertEquals(expectedPosition.getY(), lauefer.getPosition().getY());
+    }
+
+    @Test
+    void testLaeuferUnsuccessfulDownLeft() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Laeufer lauefer = new Laeufer(Color.White);
+        Bauer ranPiece = new Bauer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(lauefer);
+                entry.getValue().add(ranPiece);
+            }
+        }
+
+        lauefer.setPosition(4, 4);
+        ranPiece.setPosition(3, 3);
+
+        assertThrows(GameException.class, () -> {
+            board.move(lauefer, 2, 2);
+        });
+
+        Position expectedPosition = new Position(4, 4);
+        assertEquals(expectedPosition.getX(), lauefer.getPosition().getX());
+        assertEquals(expectedPosition.getY(), lauefer.getPosition().getY());
+    }
+
+    @Test
+    void testLaeuferSuccessTopLeft() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Laeufer lauefer = new Laeufer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(lauefer);
+            }
+        }
+
+        lauefer.setPosition(4, 2);
+        board.move(lauefer, 2, 4);
+        Position expectedPosition = new Position(2, 4);
+
+        assertEquals(expectedPosition.getX(), lauefer.getPosition().getX());
+        assertEquals(expectedPosition.getY(), lauefer.getPosition().getY());
+    }
+
+    @Test
+    void testLaeuferUnsuccessfulTopLeft() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Laeufer lauefer = new Laeufer(Color.White);
+        Bauer ranPiece = new Bauer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(lauefer);
+                entry.getValue().add(ranPiece);
+            }
+        }
+
+        lauefer.setPosition(2, 4);
+        ranPiece.setPosition(3, 3);
+
+        assertThrows(GameException.class, () -> {
+            board.move(lauefer, 4, 2);
+        });
+
+        Position expectedPosition = new Position(2, 4);
+        assertEquals(expectedPosition.getX(), lauefer.getPosition().getX());
+        assertEquals(expectedPosition.getY(), lauefer.getPosition().getY());
+    }
+
+    @Test
+    void testLaeuferSuccessDownRight() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Laeufer lauefer = new Laeufer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(lauefer);
+            }
+        }
+
+        lauefer.setPosition(2, 4);
+        board.move(lauefer, 4, 2);
+        Position expectedPosition = new Position(4, 2);
+
+        assertEquals(expectedPosition.getX(), lauefer.getPosition().getX());
+        assertEquals(expectedPosition.getY(), lauefer.getPosition().getY());
+    }
+
+    @Test
+    void testLaeuferUnsuccessfulDownRight() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Laeufer lauefer = new Laeufer(Color.White);
+        Bauer ranPiece = new Bauer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(lauefer);
+                entry.getValue().add(ranPiece);
+            }
+        }
+
+        lauefer.setPosition(4, 2);
+        ranPiece.setPosition(3, 3);
+
+        assertThrows(GameException.class, () -> {
+            board.move(lauefer, 2, 4);
+        });
+
+        Position expectedPosition = new Position(4, 2);
+        assertEquals(expectedPosition.getX(), lauefer.getPosition().getX());
+        assertEquals(expectedPosition.getY(), lauefer.getPosition().getY());
+    }
+
+    @Test
+    void testLaeuferBlockedByBlackPiece() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Laeufer lauefer = new Laeufer(Color.White);
+        Bauer ranPiece = new Bauer(Color.Black);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(lauefer);
+                entry.getValue().add(ranPiece);
+            }
+        }
+
+        lauefer.setPosition(4, 2);
+        ranPiece.setPosition(3, 3);
+
+        assertThrows(GameException.class, () -> {
+            board.move(lauefer, 2, 4);
+        });
+
+        Position expectedPosition = new Position(4, 2);
+        assertEquals(expectedPosition.getX(), lauefer.getPosition().getX());
+        assertEquals(expectedPosition.getY(), lauefer.getPosition().getY());
+    }
+
+    @Test
+    void testSpringerMoveTopTopLeft() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Springer springer = new Springer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(springer);
+            }
+        }
+
+        springer.setPosition(5, 4);
+        board.move(springer,4, 6);
+
+        Position expectedPosition = new Position(4, 6);
+        assertEquals(expectedPosition.getX(), springer.getPosition().getX());
+        assertEquals(expectedPosition.getY(), springer.getPosition().getY());
+    }
+
+    @Test
+    void testSpringerMoveTopLeftLeft() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Springer springer = new Springer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(springer);
+            }
+        }
+
+        springer.setPosition(5, 4);
+        board.move(springer,3, 5);
+
+        Position expectedPosition = new Position(3, 5);
+        assertEquals(expectedPosition.getX(), springer.getPosition().getX());
+        assertEquals(expectedPosition.getY(), springer.getPosition().getY());
+    }
+
+    @Test
+    void testSpringerMoveTopTopRight() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Springer springer = new Springer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(springer);
+            }
+        }
+
+        springer.setPosition(5, 4);
+        board.move(springer,6, 6);
+
+        Position expectedPosition = new Position(6, 6);
+        assertEquals(expectedPosition.getX(), springer.getPosition().getX());
+        assertEquals(expectedPosition.getY(), springer.getPosition().getY());
+    }
+
+    @Test
+    void testSpringerMoveTopRightRight() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Springer springer = new Springer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(springer);
+            }
+        }
+
+        springer.setPosition(5, 4);
+        board.move(springer,6, 6);
+
+        Position expectedPosition = new Position(6, 6);
+        assertEquals(expectedPosition.getX(), springer.getPosition().getX());
+        assertEquals(expectedPosition.getY(), springer.getPosition().getY());
+    }
+
+    @Test
+    void testSpringerMoveBottomRightRight() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Springer springer = new Springer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(springer);
+            }
+        }
+
+        springer.setPosition(5, 4);
+        board.move(springer,7, 3);
+
+        Position expectedPosition = new Position(7, 3);
+        assertEquals(expectedPosition.getX(), springer.getPosition().getX());
+        assertEquals(expectedPosition.getY(), springer.getPosition().getY());
+    }
+
+    @Test
+    void testSpringerMoveBottomBottomRight() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Springer springer = new Springer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(springer);
+            }
+        }
+
+        springer.setPosition(5, 4);
+        board.move(springer,6, 2);
+
+        Position expectedPosition = new Position(6, 2);
+        assertEquals(expectedPosition.getX(), springer.getPosition().getX());
+        assertEquals(expectedPosition.getY(), springer.getPosition().getY());
+    }
+
+    @Test
+    void testSpringerMoveBottomLeftLeft() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Springer springer = new Springer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(springer);
+            }
+        }
+
+        springer.setPosition(5, 4);
+        board.move(springer,3, 3);
+
+        Position expectedPosition = new Position(3, 3);
+        assertEquals(expectedPosition.getX(), springer.getPosition().getX());
+        assertEquals(expectedPosition.getY(), springer.getPosition().getY());
+    }
+
+    @Test
+    void testSpringerMoveBottomBottomLeft() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Springer springer = new Springer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(springer);
+            }
+        }
+
+        springer.setPosition(5, 4);
+        board.move(springer,4, 2);
+
+        Position expectedPosition = new Position(4, 2);
+        assertEquals(expectedPosition.getX(), springer.getPosition().getX());
+        assertEquals(expectedPosition.getY(), springer.getPosition().getY());
+    }
+
+    @Test
+    void testSpringerMoveBlocked() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Springer springer = new Springer(Color.White);
+        Bauer ranPiece = new Bauer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(springer);
+                entry.getValue().add(ranPiece);
+            }
+        }
+
+        springer.setPosition(5, 4);
+        ranPiece.setPosition(3, 3);
+        assertThrows(GameException.class, () -> {
+            board.move(springer,3, 3);
+        });
+
+        Position expectedPosition = new Position(5, 4);
+        assertEquals(expectedPosition.getX(), springer.getPosition().getX());
+        assertEquals(expectedPosition.getY(), springer.getPosition().getY());
+    }
+
+    @Test
+    void testSpringerMoveCapture() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Springer springer = new Springer(Color.White);
+        Bauer ranPiece = new Bauer(Color.Black);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.Black){
+                entry.getValue().add(ranPiece);
+            }else if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(springer);
+            }
+        }
+
+        springer.setPosition(5, 4);
+        ranPiece.setPosition(3, 3);
+        board.move(springer, 3, 3);
+
+        Position expectedPosition = new Position(3, 3);
+        assertTrue(ranPiece.isCaptured());
+        assertEquals(expectedPosition.getX(), springer.getPosition().getX());
+        assertEquals(expectedPosition.getY(), springer.getPosition().getY());
+    }
+
+    @Test
+    void testDameMoveTop() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Dame dame = new Dame(Color.White);
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(dame);
+            }
+        }
+
+        dame.setPosition(5, 4);
+        board.move(dame, 5, 5);
+
+        Position expectedPosition = new Position(5, 5);
+        assertEquals(expectedPosition.getX(), dame.getPosition().getX());
+        assertEquals(expectedPosition.getY(), dame.getPosition().getY());
+    }
+
+    @Test
+    void testDameMoveTopLeft() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Dame dame = new Dame(Color.White);
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(dame);
+            }
+        }
+
+        dame.setPosition(5, 4);
+        board.move(dame, 4, 5);
+
+        Position expectedPosition = new Position(4, 5);
+        assertEquals(expectedPosition.getX(), dame.getPosition().getX());
+        assertEquals(expectedPosition.getY(), dame.getPosition().getY());
+    }
+
+    @Test
+    void testDameMoveLeft() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Dame dame = new Dame(Color.White);
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(dame);
+            }
+        }
+
+        dame.setPosition(5, 4);
+        board.move(dame, 4, 4);
+
+        Position expectedPosition = new Position(4, 4);
+        assertEquals(expectedPosition.getX(), dame.getPosition().getX());
+        assertEquals(expectedPosition.getY(), dame.getPosition().getY());
+    }
+
+    @Test
+    void testDameDownLeft() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Dame dame = new Dame(Color.White);
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(dame);
+            }
+        }
+
+        dame.setPosition(5, 4);
+        board.move(dame, 4, 3);
+
+        Position expectedPosition = new Position(4, 3);
+        assertEquals(expectedPosition.getX(), dame.getPosition().getX());
+        assertEquals(expectedPosition.getY(), dame.getPosition().getY());
+    }
+
+    @Test
+    void testDameMoveDown() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Dame dame = new Dame(Color.White);
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(dame);
+            }
+        }
+
+        dame.setPosition(5, 4);
+        board.move(dame, 5, 3);
+
+        Position expectedPosition = new Position(5, 3);
+        assertEquals(expectedPosition.getX(), dame.getPosition().getX());
+        assertEquals(expectedPosition.getY(), dame.getPosition().getY());
+    }
+
+    @Test
+    void testDameMoveDownRight() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Dame dame = new Dame(Color.White);
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(dame);
+            }
+        }
+
+        dame.setPosition(5, 4);
+        board.move(dame, 6, 3);
+
+        Position expectedPosition = new Position(6, 3);
+        assertEquals(expectedPosition.getX(), dame.getPosition().getX());
+        assertEquals(expectedPosition.getY(), dame.getPosition().getY());
+    }
+
+    @Test
+    void testDameMoveRight() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Dame dame = new Dame(Color.White);
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(dame);
+            }
+        }
+
+        dame.setPosition(5, 4);
+        board.move(dame, 6, 4);
+
+        Position expectedPosition = new Position(6, 4);
+        assertEquals(expectedPosition.getX(), dame.getPosition().getX());
+        assertEquals(expectedPosition.getY(), dame.getPosition().getY());
+    }
+
+    @Test
+    void testDameMoveTopRight() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Dame dame = new Dame(Color.White);
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(dame);
+            }
+        }
+
+        dame.setPosition(5, 4);
+        board.move(dame, 6, 5);
+
+        Position expectedPosition = new Position(6, 5);
+        assertEquals(expectedPosition.getX(), dame.getPosition().getX());
+        assertEquals(expectedPosition.getY(), dame.getPosition().getY());
+    }
+
+    @Test
+    void testDameBlocked() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Dame dame = new Dame(Color.White);
+        Bauer ranPiece = new Bauer(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(ranPiece);
+                entry.getValue().add(dame);
+            }
+        }
+
+        dame.setPosition(5, 4);
+        ranPiece.setPosition(5, 5);
+
+        assertThrows(GameException.class, () -> {
+            board.move(dame, 5, 5);
+        });
+
+        Position expectedPosition = new Position(5, 4);
+        assertEquals(expectedPosition.getX(), dame.getPosition().getX());
+        assertEquals(expectedPosition.getY(), dame.getPosition().getY());
+    }
+
+    @Test
+    void testDameSpringeMoveFail() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Dame dame = new Dame(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(dame);
+            }
+        }
+
+        dame.setPosition(5, 4);
+        assertThrows(GameException.class, () -> {
+            board.move(dame, 6, 6);
+        });
+
+        Position expectedPosition = new Position(5, 4);
+        assertEquals(expectedPosition.getX(), dame.getPosition().getX());
+        assertEquals(expectedPosition.getY(), dame.getPosition().getY());
+    }
+
+    @Test
     void protocolMachineMoveSuccess() throws GameException, StatusException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         BoardImpl boardSender = new BoardImpl();
@@ -619,35 +1563,6 @@ public class GameEngineTests {
         assertEquals(piece.getPosition().getY(), boardMockReceiver.y);
     }
 
-    @Test
-    void pieceOutOfBounds() throws GameException, StatusException {
-        BoardImpl board = new BoardImpl();
-        Dame dame = new Dame(Color.White);
-
-        board.pickColor(ALICE, Color.Black);
-        board.pickColor(BOB, Color.White);
-
-        board.initializeField();
-        Map<iPlayer, List<iPiece>> map = board.getMap();
-
-        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
-            entry.getValue().clear();
-            if (entry.getKey().getColor() == Color.White){
-                entry.getValue().add(dame);
-            }
-        }
-
-        dame.setPosition(7, 5);
-
-        assertThrows(GameException.class, () ->{
-            board.move(dame, 9, 5);
-        });
-
-        Position expectedPosition = new Position(7, 5);
-        assertEquals(dame.getPosition().getX(), expectedPosition.getX());
-        assertEquals(dame.getPosition().getY(), expectedPosition.getY());
-
-    }
 
     private class BoardEngineTester implements iBoard{
         private boolean lastCallMove = false;
