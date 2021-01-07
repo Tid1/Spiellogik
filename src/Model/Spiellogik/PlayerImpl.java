@@ -3,6 +3,7 @@ package Model.Spiellogik;
 public class PlayerImpl implements iPlayer {
     private final Color COLOR;
     private final String NAME;
+    private boolean checked;
 
     public PlayerImpl(Color color, String name){
         this.COLOR = color;
@@ -23,5 +24,15 @@ public class PlayerImpl implements iPlayer {
     @Override
     public boolean surrender() {
         return true;
+    }
+
+    @Override
+    public boolean checked() {
+        return checked;
+    }
+
+    @Override
+    public void setChecked(boolean checked){
+        this.checked = checked;
     }
 }

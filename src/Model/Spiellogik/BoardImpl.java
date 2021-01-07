@@ -6,12 +6,15 @@ import Model.Spiellogik.*;
 import Model.Spiellogik.Figuren.*;
 import Model.Spiellogik.MoveSets.MoveSetAssist;
 import javafx.geometry.Pos;
+import sun.misc.Launcher;
+import sun.security.provider.ConfigFile;
 
 import java.lang.reflect.MalformedParameterizedTypeException;
 import java.util.*;
 
 public class BoardImpl implements iBoard {
     private Map<iPlayer, List<iPiece>> map = new HashMap<>();
+    private boolean gameEnded = false;
     private Status status = Status.START;
     private final int BOUNDS = 8;
     private final int UPPERBOUNDS = 8;
@@ -28,6 +31,7 @@ public class BoardImpl implements iBoard {
             throw new StatusException("Can only be called while game is starting!");
         }
 
+        gameEnded = false;
         status = Status.TURN_WHITE;
 
         List<iPlayer> playerList = new ArrayList<>(map.keySet());
@@ -49,11 +53,11 @@ public class BoardImpl implements iBoard {
                 whitePieces.add(new Turm(Color.White, new Position(i, 1)));
                 blackPieces.add(new Turm(Color.Black, new Position(i, 8)));
             } else if (i == 2 || i == 7) {
-                whitePieces.add(new Laeufer(Color.White, new Position(i, 1)));
-                blackPieces.add(new Laeufer(Color.Black, new Position(i, 8)));
-            } else if (i == 3 || i == 6) {
                 whitePieces.add(new Springer(Color.White, new Position(i, 1)));
                 blackPieces.add(new Springer(Color.Black, new Position(i, 8)));
+            } else if (i == 3 || i == 6) {
+                whitePieces.add(new Laeufer(Color.White, new Position(i, 1)));
+                blackPieces.add(new Laeufer(Color.Black, new Position(i, 8)));
             } else if (i == 4) {
                 whitePieces.add(new Dame(Color.White, new Position(i, 1)));
                 blackPieces.add(new Dame(Color.Black, new Position(i, 8)));
@@ -83,6 +87,10 @@ public class BoardImpl implements iBoard {
         if (this.status == Status.TURN_BLACK && piece.getColor() != Color.Black ||
                 this.status == Status.TURN_WHITE && piece.getColor() != Color.White){
             throw new StatusException("Wrong players turn");
+        }
+
+        if (this.status == Status.END || this.status == Status.STALEMATE){
+            throw new StatusException("Game already ended!");
         }
         if (checkValidMove(piece, x, y)) {
             iPiece pieceOnField = onField(x, y);
@@ -149,11 +157,13 @@ public class BoardImpl implements iBoard {
         for (iPiece piece : pieceList) {
             if (piece.getType() == Typ.KOENIG) {
                 if (MoveSetAssist.countCheck(this, player.getColor(), piece.getPosition())>0) {
+                    player.setChecked(true);
                     return true;
                 }
                 break;
             }
         }
+        player.setChecked(false);
         return false;
     }
 
@@ -162,12 +172,13 @@ public class BoardImpl implements iBoard {
         List<iPiece> pieceList = map.get(player);
         if (checkForCheck(player)) {
             for (iPiece piece : pieceList) {
-                if (piece.getMoveset().moveSet(this) != null) {
+                if (piece.getMoveset().moveSet(this).size() != 0) {
                     return false;
                 }
             }
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -175,12 +186,13 @@ public class BoardImpl implements iBoard {
         List<iPiece> pieceList = map.get(player);
         if (!checkForCheck(player)) {
             for (iPiece piece : pieceList) {
-                if (piece.getMoveset().moveSet(this) != null) {
+                if (piece.getMoveset().moveSet(this).size() != 0) {
                     return false;
                 }
             }
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -238,6 +250,9 @@ public class BoardImpl implements iBoard {
     }
 
     private void changeTurns() throws StatusException {
+        if (this.status == Status.END || this.status == Status.STALEMATE){
+            throw new StatusException("Game ended");
+        }
         if (this.status != Status.TURN_BLACK && this.status != Status.TURN_WHITE){
             throw new StatusException("Cant Swap turns");
         }
@@ -253,6 +268,7 @@ public class BoardImpl implements iBoard {
                                 // TODO: Liste erstellen PosiblePositions
                                 this.posiblePositions = MoveSetAssist.getPosiblePositions(this, piece.getPosition());
                             }
+                            break;
                         }
                     }
                 }
@@ -274,8 +290,40 @@ public class BoardImpl implements iBoard {
                 }
             }
         }
+        iPlayer currentTurn = null;
+        List<iPlayer> players = new ArrayList<>(map.keySet());
 
+        for (iPlayer player : players){
+            if (status == Status.TURN_BLACK && player.getColor() == Color.Black){
+                currentTurn = player;
+            } else if (status == Status.TURN_WHITE && player.getColor() == Color.White){
+                currentTurn = player;
+            }
+        }
+
+        if (checkMate(currentTurn)){
+            status = Status.END;
+        }
+
+        else if (checkStalemate(currentTurn)){
+            status = Status.STALEMATE;
+        }
+        triggerGameEnd();
     }
+
+    public void triggerGameEnd(){
+        if (this.status == Status.STALEMATE || this.status == Status.END){
+            gameEnded = true;
+        }
+    }
+
+    public Status getStatus(){
+        return status;
+    }
+    public boolean getGameEnd(){
+        return gameEnded;
+    }
+
     public int getUPPERBOUNDS() {
         return UPPERBOUNDS;
     }

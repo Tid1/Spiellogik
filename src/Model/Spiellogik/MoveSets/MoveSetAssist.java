@@ -161,6 +161,7 @@ public class MoveSetAssist {
                                 tempPiece = board.onField(currentPosition.getX()-j, currentPosition.getY()+j);
                             } else {
                                 positionBooleanArray[i] = false;
+                                break;
                             }
                         }
                         break;
@@ -170,6 +171,7 @@ public class MoveSetAssist {
                                 tempPiece = board.onField(currentPosition.getX(), currentPosition.getY()+j);
                             } else {
                                 positionBooleanArray[i] = false;
+                                break;
                             }
                         }
                         break;
@@ -233,29 +235,33 @@ public class MoveSetAssist {
                     if (tempPiece.getColor()!=color) {
                         if (j==1) {
                             if (tempPiece.getType() == Typ.KOENIG) {
+                                board.setCheckingPiece(tempPiece);
                                 counter++;
                             }
                         }
                         if (i%2 ==0) {
                             if (tempPiece.getType() == Typ.LAEUFER || tempPiece.getType() == Typ.DAME) {
+                                board.setCheckingPiece(tempPiece);
                                 counter++;
                             }
                             if (j==1) {
                                 if (tempPiece.getType() == Typ.BAUER) {
                                     if (color==Color.White && (i==0 || i==2)) {
+                                        board.setCheckingPiece(tempPiece);
                                         counter++;
                                     } else if (i==4 || i==6) {
+                                        board.setCheckingPiece(tempPiece);
                                         counter++;
                                     }
                                 }
                             }
                         } else {
                             if (tempPiece.getType() == Typ.TURM || tempPiece.getType() == Typ.DAME) {
+                                board.setCheckingPiece(tempPiece);
                                 counter++;
                             }
                         }
                     }
-                    board.setCheckingPiece(tempPiece);
                 }
             }
         }

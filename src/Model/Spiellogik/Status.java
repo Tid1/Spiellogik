@@ -12,5 +12,6 @@ public enum Status {
     STANDBY, // 3
     WHITE_CHECKED, //4.1
     BLACK_CHECKED, //4.2
-    END // 5
+    END, // 5
+    STALEMATE
 }

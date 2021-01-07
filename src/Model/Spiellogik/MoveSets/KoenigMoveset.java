@@ -68,8 +68,8 @@ public class KoenigMoveset implements iMoveSet{
                     if (!rookPiece.hasMoved()) {
                         boolean rochade = true;
                         for (int i=1; i<=3; i++) {
-                            if (board.onField(currentPosition.getX()+i, currentPosition.getY()) != null
-                                    || MoveSetAssist.countCheck(board, pieceColor, new Position(currentPosition.getX()+i, currentPosition.getY()))>0) {
+                            if (board.onField(currentPosition.getX()-i, currentPosition.getY()) != null
+                                    || MoveSetAssist.countCheck(board, pieceColor, new Position(currentPosition.getX()-i, currentPosition.getY()))>0) {
                                 rochade = false;
                             }
                         }
@@ -84,8 +84,8 @@ public class KoenigMoveset implements iMoveSet{
                     if (!rookPiece.hasMoved()) {
                         boolean rochade = true;
                         for (int i=1; i<=2; i++) {
-                            if (board.onField(currentPosition.getX()-i, currentPosition.getY()) != null
-                                    || MoveSetAssist.countCheck(board, pieceColor, new Position(currentPosition.getX()-i, currentPosition.getY()))>0) {
+                            if (board.onField(currentPosition.getX()+i, currentPosition.getY()) != null
+                                    || MoveSetAssist.countCheck(board, pieceColor, new Position(currentPosition.getX()+i, currentPosition.getY()))>0) {
                                 rochade = false;
                             }
                         }

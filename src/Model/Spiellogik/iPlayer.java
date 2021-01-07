@@ -14,4 +14,6 @@ public interface iPlayer {
     String getName();
 
     boolean surrender();
+    boolean checked();
+    void setChecked(boolean checked);
 }
