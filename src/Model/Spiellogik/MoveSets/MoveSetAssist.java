@@ -400,7 +400,7 @@ public class MoveSetAssist {
         List<Position> returnList = new LinkedList<>();
         for (Position valid : validMoves) {
             for (Position posible : posiblePositions) {
-                if (valid == posible) {
+                if (valid.getX() == posible.getX() && valid.getY() == posible.getY()) {
                     returnList.add(posible);
                 }
             }
