@@ -2138,6 +2138,39 @@ public class GameEngineTests {
     }
 
     @Test
+    void testStalemate() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+        Koenig koenigw= new Koenig(Color.White);
+        Koenig koenigb= new Koenig(Color.Black);
+        Dame dame= new Dame(Color.White);
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
+            entry.getValue().clear();
+            if (entry.getKey().getColor() == Color.White){
+                entry.getValue().add(koenigw);
+                entry.getValue().add(koenigb);
+                entry.getValue().add(dame);
+            }
+        }
+
+        koenigw.setPosition(8, 6);
+        koenigb.setPosition(7, 8);
+        dame.setPosition(1, 6);
+
+        board.move(dame, 6, 6);
+
+        assertTrue(board.getGameEnd());
+        assertEquals(Status.STALEMATE, board.getStatus());
+    }
+
+
+    @Test
     void protocolMachineMoveSuccess() throws GameException, StatusException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         BoardImpl boardSender = new BoardImpl();
