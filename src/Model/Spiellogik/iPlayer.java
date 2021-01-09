@@ -1,6 +1,8 @@
 package Model.Spiellogik;
 
-public interface iPlayer {
+import java.io.Serializable;
+
+public interface iPlayer extends Serializable {
     /**
      * Farbe die einem Spieler zugewiesen wird
      * @return Die Farbe des Spielers

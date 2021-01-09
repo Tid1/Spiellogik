@@ -3,7 +3,9 @@ package Model.Spiellogik.Figuren;
 import Model.Spiellogik.Color;
 import Model.Spiellogik.MoveSets.iMoveSet;
 
-public interface iPiece {
+import java.io.Serializable;
+
+public interface iPiece extends Serializable {
     /**
      * Farbe der Figur
      * @return Farbe der Figur

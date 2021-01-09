@@ -5,6 +5,7 @@ import Model.Spiellogik.MoveSets.LaeuferMoveset;
 import Model.Spiellogik.MoveSets.iMoveSet;
 
 public class Laeufer implements iPiece{
+    public static final long serialVersionUID = 445L;
     private final Color COLOR;
     private final Typ TYP = Typ.LAEUFER;
     private Position position;

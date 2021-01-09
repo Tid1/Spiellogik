@@ -4,7 +4,9 @@ import Model.Exceptions.GameException;
 import Model.Exceptions.StatusException;
 import Model.Spiellogik.Figuren.iPiece;
 
-public interface iBoard {
+import java.io.Serializable;
+
+public interface iBoard extends Serializable {
     /**
      * Erzeugt ein 2d Array aus int-Werten
      * @throws StatusException wenn versucht wird die Methode in irgendeinem Zustand der nicht ONE_PICKED ist aufzurufen

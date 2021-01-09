@@ -35,6 +35,7 @@ public class BoardProtocolEngine implements iBoard {
         DataInputStream dais = new DataInputStream(bais);
         try {
             int method = dais.readInt();
+            System.out.println("Current Method: " + method);
             switch (method){
                 case METHOD_MOVE:
                     this.deserializeMove();
@@ -66,11 +67,17 @@ public class BoardProtocolEngine implements iBoard {
         baos.reset();
         DataOutputStream daos = new DataOutputStream(baos);
         try {
+            System.out.println("Serializing method move: ");
             daos.writeInt(METHOD_MOVE);
+            System.out.println("Writing " + METHOD_MOVE + " into the stream");
             daos.writeInt(piece.getPosition().getX());
+            System.out.println("Writing " + piece.getPosition().getX() + " into the stream");
             daos.writeInt(piece.getPosition().getY());
+            System.out.println("Writing " + piece.getPosition().getY() + " into the stream");
             daos.writeInt(x);
+            System.out.println("Writing "+ x + " into the stream");
             daos.writeInt(y);
+            System.out.println("Writing " + y + " into the stream");
             board.move(piece, x, y);
         } catch (IOException e) {
             e.printStackTrace();
@@ -146,6 +153,7 @@ public class BoardProtocolEngine implements iBoard {
     private void deserializePickColor(){
         DataInputStream dais = new DataInputStream(this.bais);
         try {
+            System.out.println("Deserialising pick color");
            String playerName = dais.readUTF();
            Color color = null;
            int wantedColor  = dais.readInt();

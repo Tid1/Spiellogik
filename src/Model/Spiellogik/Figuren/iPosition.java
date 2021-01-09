@@ -1,6 +1,8 @@
 package Model.Spiellogik.Figuren;
 
-public interface iPosition {
+import java.io.Serializable;
+
+public interface iPosition extends Serializable {
     /**
      * Gibt den x-Wert einer Position zurück
      * @return Der x-Wert einer Position

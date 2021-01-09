@@ -6,6 +6,7 @@ import Model.Spiellogik.MoveSets.DameMoveset;
 import Model.Spiellogik.MoveSets.iMoveSet;
 
 public class Dame implements iPiece{
+    public static final long serialVersionUID = 45L;
     private final Color COLOR;
     private final Typ TYP = Typ.DAME;
     private Position position;

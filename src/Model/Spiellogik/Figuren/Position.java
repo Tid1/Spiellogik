@@ -1,6 +1,7 @@
 package Model.Spiellogik.Figuren;
 
 public class Position implements iPosition {
+    public static final long serialVersionUID = 43L;
     private int x;
     private int y;
 

@@ -5,6 +5,7 @@ import Model.Spiellogik.MoveSets.TurmMoveset;
 import Model.Spiellogik.MoveSets.iMoveSet;
 
 public class Turm implements iPiece{
+    public static final long serialVersionUID = 55L;
     private final Color COLOR;
     private final Typ TYP = Typ.TURM;
     private Position position;
