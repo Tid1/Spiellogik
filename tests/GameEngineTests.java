@@ -2169,7 +2169,6 @@ public class GameEngineTests {
         assertEquals(Status.STALEMATE, board.getStatus());
     }
 
-
     @Test
     void protocolMachineMoveSuccess() throws GameException, StatusException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

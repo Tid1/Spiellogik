@@ -324,6 +324,10 @@ public class BoardImpl implements iBoard {
         return gameEnded;
     }
 
+    public void surrender(){
+        this.gameEnded = true;
+    }
+
     public int getUPPERBOUNDS() {
         return UPPERBOUNDS;
     }

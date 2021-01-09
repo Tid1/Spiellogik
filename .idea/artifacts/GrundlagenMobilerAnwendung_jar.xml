@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="GrundlagenMobilerAnwendung:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/GrundlagenMobilerAnwendung_jar</output-path>
+    <root id="archive" name="GrundlagenMobilerAnwendung.jar">
+      <element id="module-output" name="GrundlagenMobilerAnwendung" />
+    </root>
+  </artifact>
+</component>
