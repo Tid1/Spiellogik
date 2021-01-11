@@ -13,6 +13,7 @@ import java.lang.reflect.MalformedParameterizedTypeException;
 import java.util.*;
 
 public class BoardImpl implements iBoard {
+    static final long serialVersionUID = 30L;
     private Map<iPlayer, List<iPiece>> map = new HashMap<>();
     private boolean gameEnded = false;
     private Status status = Status.START;
@@ -322,6 +323,10 @@ public class BoardImpl implements iBoard {
     }
     public boolean getGameEnd(){
         return gameEnded;
+    }
+
+    public void surrender(){
+        this.gameEnded = true;
     }
 
     public int getUPPERBOUNDS() {

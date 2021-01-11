@@ -5,6 +5,7 @@ import Model.Spiellogik.MoveSets.SpringerMoveset;
 import Model.Spiellogik.MoveSets.iMoveSet;
 
 public class Springer implements iPiece{
+    public static final long serialVersionUID = 444L;
     private final Color COLOR;
     private final Typ TYP = Typ.SPRINGER;
     private Position position;

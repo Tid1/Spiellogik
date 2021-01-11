@@ -6,6 +6,7 @@ import Model.Spiellogik.MoveSets.KoenigMoveset;
 import Model.Spiellogik.MoveSets.iMoveSet;
 
 public class Koenig implements iPiece {
+    public static final long serialVersionUID = 40L;
     private final Color COLOR;
     private final Typ TYP = Typ.KOENIG;
     private Position position;

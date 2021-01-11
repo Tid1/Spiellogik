@@ -5,6 +5,7 @@ import Model.Spiellogik.MoveSets.BauerMoveset;
 import Model.Spiellogik.MoveSets.iMoveSet;
 
 public class Bauer implements iPiece{
+    static final long serialVersionUID = 44L;
     private final Color COLOR;
     private final Typ TYP = Typ.BAUER;
     private Position position;
