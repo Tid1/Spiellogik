@@ -28,6 +28,9 @@ public class LaeuferMoveset implements iMoveSet{
         if (board.getCheckCount() >=2) {
             return new LinkedList<>();
         }
+        if (board.onField(currentPosition.getX(), currentPosition.getY()).isPinend()) {
+            return new LinkedList<>();
+        }
         List<Position> validMoves = MoveSetAssist.getDiagonalMoveset(board, pieceColor, currentPosition);
         if (board.getCheckCount() == 1) {
             validMoves = MoveSetAssist.getCheckedValidMoves(validMoves, board);

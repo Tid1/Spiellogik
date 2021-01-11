@@ -37,6 +37,9 @@ public class BauerMoveset implements iMoveSet{
         if (board.getCheckCount() >=2) {
             return new LinkedList<>();
         }
+        if (board.onField(currentPosition.getX(), currentPosition.getY()).isPinend()) {
+            return new LinkedList<>();
+        }
         switch (pieceColor){
             case White:
                 validPostitions = moveWhite(board);
@@ -59,11 +62,11 @@ public class BauerMoveset implements iMoveSet{
             if (currentPosition.getY()-SINGLE_MOVE >= LOWER_BOUNDS && currentPosition.getY()-SINGLE_MOVE <= UPPER_BOUNDS){
                 if (board.onField(currentPosition.getX(), currentPosition.getY()- SINGLE_MOVE) == null){
                     validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()-SINGLE_MOVE));
-                }
-            }
-            if (currentPosition.getY() == BLACK_PAWN_START){
-                if (board.onField(currentPosition.getX(), currentPosition.getY()- DOUBLE_MOVE) == null){
-                    validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()-DOUBLE_MOVE));
+                    if (currentPosition.getY() == BLACK_PAWN_START){
+                        if (board.onField(currentPosition.getX(), currentPosition.getY()- DOUBLE_MOVE) == null){
+                            validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()-DOUBLE_MOVE));
+                        }
+                    }
                 }
             }
             if (currentPosition.getX() - SINGLE_MOVE >= LOWER_BOUNDS){
@@ -88,11 +91,11 @@ public class BauerMoveset implements iMoveSet{
             if (currentPosition.getY()+SINGLE_MOVE >= LOWER_BOUNDS && currentPosition.getY()+SINGLE_MOVE <= UPPER_BOUNDS){
                 if (board.onField(currentPosition.getX(), currentPosition.getY()+SINGLE_MOVE) == null){
                     validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()+SINGLE_MOVE));
-                }
-            }
-            if (currentPosition.getY() == WHITE_PAWN_START){
-                if (board.onField(currentPosition.getX(), currentPosition.getY()+DOUBLE_MOVE) == null){
-                    validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()+DOUBLE_MOVE));
+                    if (currentPosition.getY() == WHITE_PAWN_START){
+                        if (board.onField(currentPosition.getX(), currentPosition.getY()+DOUBLE_MOVE) == null){
+                            validPositions.add(new Position(currentPosition.getX(), currentPosition.getY()+DOUBLE_MOVE));
+                        }
+                    }
                 }
             }
             if (currentPosition.getX() - SINGLE_MOVE >= LOWER_BOUNDS){

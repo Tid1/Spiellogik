@@ -302,6 +302,8 @@ public class BoardImpl implements iBoard {
             }
         }
 
+        MoveSetAssist.setPinned(this);
+
         if (checkMate(currentTurn)){
             status = Status.END;
         }

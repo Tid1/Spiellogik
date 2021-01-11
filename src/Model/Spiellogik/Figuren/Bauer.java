@@ -10,6 +10,7 @@ public class Bauer implements iPiece{
     private final Typ TYP = Typ.BAUER;
     private Position position;
     private boolean captured = false;
+    private boolean pinned = false;
 
     public Bauer(Color color){
         this.COLOR = color;
@@ -41,7 +42,12 @@ public class Bauer implements iPiece{
 
     @Override
     public boolean isPinend() {
-        return false;
+        return pinned;
+    }
+
+    @Override
+    public void setPinned(boolean pinned) {
+        this.pinned = pinned;
     }
 
     @Override

@@ -10,6 +10,7 @@ public class Laeufer implements iPiece{
     private final Typ TYP = Typ.LAEUFER;
     private Position position;
     private boolean captured = false;
+    private boolean pinned = false;
 
     public Laeufer(Color color){
         this.COLOR = color;
@@ -41,7 +42,12 @@ public class Laeufer implements iPiece{
 
     @Override
     public boolean isPinend() {
-        return false;
+        return pinned;
+    }
+
+    @Override
+    public void setPinned(boolean pinned) {
+        this.pinned = pinned;
     }
 
     @Override

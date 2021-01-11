@@ -11,6 +11,7 @@ public class Dame implements iPiece{
     private final Typ TYP = Typ.DAME;
     private Position position;
     private boolean captured = false;
+    private boolean pinned = false;
 
     public Dame(Color color){
         this.COLOR = color;
@@ -42,7 +43,12 @@ public class Dame implements iPiece{
 
     @Override
     public boolean isPinend() {
-        return false;
+        return pinned;
+    }
+
+    @Override
+    public void setPinned(boolean pinned) {
+        this.pinned = pinned;
     }
 
     @Override

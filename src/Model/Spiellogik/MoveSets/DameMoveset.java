@@ -26,6 +26,9 @@ public class DameMoveset implements iMoveSet{
         if (board.getCheckCount() >=2) {
             return new LinkedList<>();
         }
+        if (board.onField(currentPosition.getX(), currentPosition.getY()).isPinend()) {
+            return new LinkedList<>();
+        }
         List<Position> validMoves = MoveSetAssist.getDiagonalMoveset(board, pieceColor, currentPosition);
         for (Position position : MoveSetAssist.getHorizontalVerticalMoveset(board, pieceColor, currentPosition)) {
             validMoves.add(position);

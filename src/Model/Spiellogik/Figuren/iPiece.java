@@ -40,6 +40,12 @@ public interface iPiece extends Serializable {
     boolean isPinend();
 
     /**
+     *
+     * @return
+     */
+    void setPinned(boolean pinned);
+
+    /**
      * Gibt zurück ob eine Figur geschlagen wurde
      * @return true, wenn sie geschlagen wurde, false wenn nicht
      */

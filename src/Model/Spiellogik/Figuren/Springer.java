@@ -10,6 +10,7 @@ public class Springer implements iPiece{
     private final Typ TYP = Typ.SPRINGER;
     private Position position;
     private boolean captured = false;
+    private boolean pinned = false;
 
     public Springer(Color color){
         this.COLOR = color;
@@ -41,7 +42,12 @@ public class Springer implements iPiece{
 
     @Override
     public boolean isPinend() {
-        return false;
+        return pinned;
+    }
+
+    @Override
+    public void setPinned(boolean pinned) {
+        this.pinned = pinned;
     }
 
     @Override

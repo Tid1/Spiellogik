@@ -30,6 +30,9 @@ public class SpringerMoveset implements iMoveSet{
         if (board.getCheckCount() >=2) {
             return new LinkedList<>();
         }
+        if (board.onField(currentPosition.getX(), currentPosition.getY()).isPinend()) {
+            return new LinkedList<>();
+        }
         springerMove(board, validMoves, NOTMAGICTWO, NOTMAGICONE);
         springerMove(board, validMoves, NOTMAGICONE, NOTMAGICTWO);
         if (board.getCheckCount() == 1) {

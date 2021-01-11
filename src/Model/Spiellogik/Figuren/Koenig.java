@@ -47,6 +47,9 @@ public class Koenig implements iPiece {
     }
 
     @Override
+    public void setPinned(boolean pinned) {return;}
+
+    @Override
     public boolean isCaptured() {
         return captured;
     }

@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class MoveSetAssist {
     static int counter;
@@ -406,5 +407,142 @@ public class MoveSetAssist {
             }
         }
         return returnList;
+    }
+
+    public static void setPinned(BoardImpl board) {
+        boolean[] positionBooleanArray = new boolean[8];
+        iPiece friendlyPiece = null;
+        Color color;
+        iPiece king = null;
+        if (board.getStatus() == Status.TURN_WHITE) {
+            color = Color.White;
+        } else {
+            color = Color.Black;
+        }
+
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()) {
+            if (entry.getKey().getColor() == color) {
+                List<iPiece> temp = entry.getValue();
+                for (iPiece piece : temp) {
+                    if (piece.getType() == Typ.KOENIG) {
+                        king = piece;
+                    }
+                    piece.setPinned(false);
+                }
+            }
+        }
+
+        if (king != null) {
+            for (int i=0; i<8; i++) {
+                positionBooleanArray[i] = true;
+            }
+            for (int i=0; i<8; i++) {
+                friendlyPiece = null;
+                for (int j = 1; j <= board.getUPPERBOUNDS(); j++) {
+                    iPiece tempPiece = null;
+                    switch (i) {
+                        case 0: //direction: top-left
+                            if (positionBooleanArray[i]) {
+                                if (king.getPosition().getX() - j >= board.getLOWERBOUNDS() && king.getPosition().getY() + j <= board.getUPPERBOUNDS()) {
+                                    tempPiece = board.onField(king.getPosition().getX() - j, king.getPosition().getY() + j);
+                                } else {
+                                    positionBooleanArray[i] = false;
+                                    break;
+                                }
+                            }
+                            break;
+                        case 1: //direction: top
+                            if (positionBooleanArray[i]) {
+                                if (king.getPosition().getY() + j <= board.getUPPERBOUNDS()) {
+                                    tempPiece = board.onField(king.getPosition().getX(), king.getPosition().getY() + j);
+                                } else {
+                                    positionBooleanArray[i] = false;
+                                    break;
+                                }
+                            }
+                            break;
+                        case 2: //direction: top-right
+                            if (positionBooleanArray[i]) {
+                                if (king.getPosition().getX() + j <= board.getUPPERBOUNDS() && king.getPosition().getY() + j <= board.getUPPERBOUNDS()) {
+                                    tempPiece = board.onField(king.getPosition().getX() + j, king.getPosition().getY() + j);
+                                } else {
+                                    positionBooleanArray[i] = false;
+                                }
+                            }
+                            break;
+                        case 3: //direction: right
+                            if (positionBooleanArray[i]) {
+                                if (king.getPosition().getX() + j <= board.getUPPERBOUNDS()) {
+                                    tempPiece = board.onField(king.getPosition().getX() + j, king.getPosition().getY());
+                                } else {
+                                    positionBooleanArray[i] = false;
+                                }
+                            }
+                            break;
+                        case 4: //direction: bottom-right
+                            if (positionBooleanArray[i]) {
+                                if (king.getPosition().getX() + j <= board.getUPPERBOUNDS() && king.getPosition().getY() - j >= board.getLOWERBOUNDS()) {
+                                    tempPiece = board.onField(king.getPosition().getX() + j, king.getPosition().getY() - j);
+                                } else {
+                                    positionBooleanArray[i] = false;
+                                }
+                            }
+                            break;
+                        case 5: //direction: bottom
+                            if (positionBooleanArray[i]) {
+                                if (king.getPosition().getY() - j >= board.getLOWERBOUNDS()) {
+                                    tempPiece = board.onField(king.getPosition().getX(), king.getPosition().getY() - j);
+                                } else {
+                                    positionBooleanArray[i] = false;
+                                }
+                            }
+                            break;
+                        case 6: //direction: bottom-left
+                            if (positionBooleanArray[i]) {
+                                if (king.getPosition().getX() - j >= board.getLOWERBOUNDS() && king.getPosition().getY() - j >= board.getLOWERBOUNDS()) {
+                                    tempPiece = board.onField(king.getPosition().getX() - j, king.getPosition().getY() - j);
+                                } else {
+                                    positionBooleanArray[i] = false;
+                                }
+                            }
+                            break;
+                        case 7: //direction: left
+                            if (positionBooleanArray[i]) {
+                                if (king.getPosition().getX() - j >= board.getLOWERBOUNDS()) {
+                                    tempPiece = board.onField(king.getPosition().getX() - j, king.getPosition().getY());
+                                } else {
+                                    positionBooleanArray[i] = false;
+                                }
+                            }
+                            break;
+                    }
+                    if (tempPiece != null) {
+                        if (tempPiece.getColor()==color) {
+                            if (friendlyPiece == null) {
+                                friendlyPiece = tempPiece;
+                            } else {
+                                positionBooleanArray[i] = false;
+                            }
+                        } else {
+                            if (friendlyPiece != null) {
+                                if (i%2 == 0) {
+                                    if (tempPiece.getType() == Typ.LAEUFER || tempPiece.getType() == Typ.DAME) {
+                                        friendlyPiece.setPinned(true);
+                                    }
+                                } else {
+                                    if (tempPiece.getType() == Typ.TURM || tempPiece.getType() == Typ.DAME) {
+                                        friendlyPiece.setPinned(true);
+                                    }
+                                }
+                            } else {
+                                positionBooleanArray[i] = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

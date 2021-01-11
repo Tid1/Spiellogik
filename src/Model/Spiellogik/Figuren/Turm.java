@@ -11,6 +11,7 @@ public class Turm implements iPiece{
     private Position position;
     private boolean captured = false;
     private boolean hasMoved = false; //TODO Joshua Fragen ob sowas Sinn macht für Turm und König weil Rochade
+    private boolean pinned = false;
 
     public Turm(Color color){
         this.COLOR = color;
@@ -42,7 +43,12 @@ public class Turm implements iPiece{
 
     @Override
     public boolean isPinend() {
-        return false;
+        return pinned;
+    }
+
+    @Override
+    public void setPinned(boolean pinned) {
+        this.pinned = pinned;
     }
 
     @Override
