@@ -277,28 +277,28 @@ public class MoveSetAssist {
         iPiece tempPiece = null;
         if (currentPosition.getX()+x <= board.getUPPERBOUNDS() && currentPosition.getY()+y <= board.getUPPERBOUNDS()) {
             tempPiece = board.onField(currentPosition.getX()+x, currentPosition.getY()+y);
-            if (checkField(tempPiece, color)) {
+            if (checkField(tempPiece, color) && tempPiece.getType() == Typ.SPRINGER) {
                 counter++;
                 board.setCheckingPiece(tempPiece);
             }
         }
         if (currentPosition.getX()+x <= board.getUPPERBOUNDS() && currentPosition.getY()-y >= board.getLOWERBOUNDS()) {
             tempPiece = board.onField(currentPosition.getX()+ x, currentPosition.getY()- y);
-            if (checkField(tempPiece, color)) {
+            if (checkField(tempPiece, color) && tempPiece.getType() == Typ.SPRINGER) {
                 counter++;
                 board.setCheckingPiece(tempPiece);
             }
         }
         if (currentPosition.getX()-x >= board.getLOWERBOUNDS() && currentPosition.getY()+y <= board.getUPPERBOUNDS()) {
             tempPiece = board.onField(currentPosition.getX()- x, currentPosition.getY()+ y);
-            if (checkField(tempPiece, color)) {
+            if (checkField(tempPiece, color) && tempPiece.getType() == Typ.SPRINGER) {
                 counter++;
                 board.setCheckingPiece(tempPiece);
             }
         }
         if (currentPosition.getX()-x >= board.getLOWERBOUNDS() && currentPosition.getY()-y >= board.getLOWERBOUNDS()) {
             tempPiece = board.onField(currentPosition.getX()- x, currentPosition.getY()- y);
-            if (checkField(tempPiece, color)) {
+            if (checkField(tempPiece, color) && tempPiece.getType() == Typ.SPRINGER) {
                 counter++;
                 board.setCheckingPiece(tempPiece);
             }

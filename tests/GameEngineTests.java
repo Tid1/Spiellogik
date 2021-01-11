@@ -2169,6 +2169,78 @@ public class GameEngineTests {
         assertEquals(Status.STALEMATE, board.getStatus());
     }
 
+    @Test
+    void testStalemateFullGame() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        iPiece picked = board.onField(5, 2);
+        board.move(picked, 5, 3);
+
+        picked = board.onField(1, 7);
+        board.move(picked, 1, 5);
+
+        picked = board.onField(4, 1);
+        board.move(picked, 8, 5);
+
+        picked = board.onField(1, 8);
+        board.move(picked, 1, 6);
+
+        picked = board.onField(8, 5);
+        board.move(picked, 1, 5);
+
+        picked = board.onField(8, 7);
+        board.move(picked, 8, 5);
+
+        picked = board.onField(8, 2);
+        board.move(picked, 8, 4);
+
+        picked = board.onField(1, 6);
+        board.move(picked, 8, 6);
+
+        picked = board.onField(1, 5);
+        board.move(picked, 3, 7);
+
+        picked = board.onField(6, 7);
+        board.move(picked, 6, 6);
+
+        picked = board.onField(3, 7);
+        board.move(picked, 4, 7);
+
+        picked = board.onField(5, 8);
+        board.move(picked, 6, 7);
+
+        picked = board.onField(4, 7);
+        board.move(picked, 2, 7);
+
+        picked = board.onField(4, 8);
+        board.move(picked, 4, 3);
+
+        picked = board.onField(2, 7);
+        board.move(picked, 2, 8);
+
+        picked = board.onField(4, 3);
+        board.move(picked, 8, 7);
+
+        picked = board.onField(2, 8);
+        board.move(picked, 3, 8);
+
+        picked = board.onField(6, 7);
+        board.move(picked, 7, 6);
+
+        picked = board.onField(3, 8);
+        board.move(picked, 5, 6);
+
+
+        assertTrue(board.getGameEnd());
+        assertEquals(Status.STALEMATE, board.getStatus());
+    }
+
 
     @Test
     void protocolMachineMoveSuccess() throws GameException, StatusException {
