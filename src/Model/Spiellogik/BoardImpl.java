@@ -158,7 +158,7 @@ public class BoardImpl implements iBoard {
                 }
             }
 
-            if (onField(x, y) != null){
+            if (onField(x, y) != null || deleteEnPassant){
                 for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
                     if (entry.getKey().getColor() != piece.getColor()){
                         List<iPiece> deletePiece = entry.getValue();

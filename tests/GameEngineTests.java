@@ -2267,6 +2267,7 @@ public class GameEngineTests {
         assertEquals(expectedPosition.getX(), bauerW.getPosition().getX());
         assertEquals(expectedPosition.getY(), bauerW.getPosition().getY());
         assertEquals(typ, board.onField(4, 6).getType());
+        assertNull(board.onField(4, 5));
     }
 
     @Test
@@ -2296,6 +2297,7 @@ public class GameEngineTests {
         assertEquals(expectedPosition.getX(), bauerB.getPosition().getX());
         assertEquals(expectedPosition.getY(), bauerB.getPosition().getY());
         assertEquals(typ, board.onField(5, 3).getType());
+        assertNull(board.onField(5, 4));
     }
 
     @Test
