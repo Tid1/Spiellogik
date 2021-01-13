@@ -2242,6 +2242,63 @@ public class GameEngineTests {
     }
 
     @Test
+    void testEnPassantWhite() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        iPiece bauerW = board.onField(5, 2);
+        iPiece rdmPiece = board.onField(1, 7);
+        iPiece bauerB = board.onField(4, 7);
+
+        board.move(bauerW, 5, 4);
+        board.move(rdmPiece, 1, 6);
+        board.move(bauerW, 5, 5);
+        board.move(bauerB, 4, 5);
+        board.move(bauerW, 4, 6);
+
+        Position expectedPosition = new Position(4, 6);
+        Typ typ = Typ.BAUER;
+
+        assertEquals(expectedPosition.getX(), bauerW.getPosition().getX());
+        assertEquals(expectedPosition.getY(), bauerW.getPosition().getY());
+        assertEquals(typ, board.onField(4, 6).getType());
+    }
+
+    @Test
+    void testEnPassantBlack() throws StatusException, GameException {
+        BoardImpl board = new BoardImpl();
+
+        board.pickColor(ALICE, Color.Black);
+        board.pickColor(BOB, Color.White);
+
+        board.initializeField();
+        Map<iPlayer, List<iPiece>> map = board.getMap();
+
+        iPiece bauerW = board.onField(5, 2);
+        iPiece rdmPiece = board.onField(1, 2);
+        iPiece bauerB = board.onField(4, 7);
+
+        board.move(rdmPiece, 1, 3);
+        board.move(bauerB, 4, 5);
+        board.move(rdmPiece, 1, 4);
+        board.move(bauerB, 4, 4);
+        board.move(bauerW, 5, 4);
+        board.move(bauerB, 5, 3);
+
+        Position expectedPosition = new Position(5, 3);
+        Typ typ = Typ.BAUER;
+
+        assertEquals(expectedPosition.getX(), bauerB.getPosition().getX());
+        assertEquals(expectedPosition.getY(), bauerB.getPosition().getY());
+        assertEquals(typ, board.onField(5, 3).getType());
+    }
+
+    @Test
     void protocolMachineMoveSuccess() throws GameException, StatusException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         BoardImpl boardSender = new BoardImpl();
