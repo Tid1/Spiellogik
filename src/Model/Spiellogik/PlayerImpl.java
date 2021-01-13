@@ -22,11 +22,6 @@ public class PlayerImpl implements iPlayer {
     }
 
     @Override
-    public boolean surrender() {
-        return true;
-    }
-
-    @Override
     public boolean checked() {
         return checked;
     }

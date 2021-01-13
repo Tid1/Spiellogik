@@ -24,7 +24,6 @@ public class BoardProtocolEngine implements iBoard {
     private final int METHOD_PICK_COLOR = 2;
 
 
-
     public BoardProtocolEngine(iBoard board, ByteArrayOutputStream baos, ByteArrayInputStream bais){
         this.board = board;
         this.baos = baos;

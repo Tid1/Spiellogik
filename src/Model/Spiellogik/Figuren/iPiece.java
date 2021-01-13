@@ -40,8 +40,9 @@ public interface iPiece extends Serializable {
     boolean isPinend();
 
     /**
-     *
-     * @return
+     * Setzt den Status einer Figur auf pinned.
+     * Wenn eine Figur pinned ist, kann sich diese nicht bewegen,
+     * da sonst der König im Schach oder Schachmatt wäre
      */
     void setPinned(boolean pinned);
 
@@ -53,7 +54,8 @@ public interface iPiece extends Serializable {
 
     /**
      * Ändert den Zustand der Figur
-     * @param caputred Der neue Zustand der Figur
+     * @param caputred Der neue Zustand der Figur. true, wenn
+     *                 die Figur geschlagen wurde, false wenn nicht
      */
     void setCaputred(boolean caputred);
 
