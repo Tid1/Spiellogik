@@ -25,6 +25,7 @@ public class BoardImpl implements iBoard {
     private int checkCount = 0;
     private List<Position> posiblePositions = new LinkedList<>();
     private iPiece checkingPiece;
+    private iPiece enPassantPieceW, enPassantPieceB;
 
     @Override
     public void initializeField() throws StatusException {
@@ -95,6 +96,7 @@ public class BoardImpl implements iBoard {
         }
         if (checkValidMove(piece, x, y)) {
             iPiece pieceOnField = onField(x, y);
+            boolean deleteEnPassant = false;
             if (pieceOnField != null) {
                 if (pieceOnField.getColor() == piece.getColor()) {
                     throw new GameException("Pieces are the of the same color");
@@ -130,12 +132,43 @@ public class BoardImpl implements iBoard {
                     }
                     piece = new Dame(Color.White, new Position(x, y));
                 }
+
+                //set en passant
+                if (piece.getColor() == Color.White && piece.getPosition().getY()-y==-2) {
+                    setEnPassantPieceW(piece);
+                } else if (piece.getColor() == Color.Black && piece.getPosition().getY()-y==2) {
+                    setEnPassantPieceB(piece);
+                }
+
+                //delete en passant
+                if (piece.getColor() == Color.White) {
+                    iPiece enPassant = getEnPassantPieceB();
+                    if (enPassant != null) {
+                        if (x == enPassant.getPosition().getX() && y-1 == enPassant.getPosition().getY()) {
+                            deleteEnPassant = true;
+                        }
+                    }
+                } else {
+                    iPiece enPassant = getEnPassantPieceW();
+                    if (enPassant != null) {
+                        if (x == enPassant.getPosition().getX() && y+1 == enPassant.getPosition().getY()) {
+                            deleteEnPassant = true;
+                        }
+                    }
+                }
             }
 
             if (onField(x, y) != null){
                 for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
                     if (entry.getKey().getColor() != piece.getColor()){
                         List<iPiece> deletePiece = entry.getValue();
+                        if (deleteEnPassant) {
+                            if (getStatus() == Status.TURN_WHITE) {
+                                deletePiece.remove(getEnPassantPieceB());
+                            } else {
+                                deletePiece.remove(getEnPassantPieceW());
+                            }
+                        }
                         for (iPiece pieceToDelete : deletePiece){
                             if (pieceToDelete == onField(x, y)){
                                 deletePiece.remove(pieceToDelete);
@@ -259,6 +292,7 @@ public class BoardImpl implements iBoard {
         }
         if (this.status == Status.TURN_WHITE){
             this.status = Status.TURN_BLACK;
+            setEnPassantPieceB(null);
             for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
                 if (entry.getKey().getColor() == Color.Black) {
                     List<iPiece> list = entry.getValue();
@@ -276,6 +310,7 @@ public class BoardImpl implements iBoard {
             }
         } else {
             this.status = Status.TURN_WHITE;
+            setEnPassantPieceW(null);
             for (Map.Entry<iPlayer, List<iPiece>> entry : map.entrySet()){
                 if (entry.getKey().getColor() == Color.White) {
                     List<iPiece> list = entry.getValue();
@@ -340,6 +375,19 @@ public class BoardImpl implements iBoard {
 
     public int getCheckCount() {
         return checkCount;
+    }
+
+    public iPiece getEnPassantPieceW() {
+        return enPassantPieceW;
+    }
+    public void setEnPassantPieceW(iPiece piece) {
+        enPassantPieceW = piece;
+    }
+    public iPiece getEnPassantPieceB() {
+        return enPassantPieceB;
+    }
+    public void setEnPassantPieceB(iPiece piece) {
+        enPassantPieceB = piece;
     }
 
     public List<Position> getPosiblePositions() {

@@ -43,9 +43,23 @@ public class BauerMoveset implements iMoveSet{
         switch (pieceColor){
             case White:
                 validPostitions = moveWhite(board);
+                if (board.getEnPassantPieceB() != null &&
+                        board.getEnPassantPieceB().getPosition().getY() == currentPosition.getY() &&
+                        (board.getEnPassantPieceB().getPosition().getX()-currentPosition.getX()==1 ||
+                                board.getEnPassantPieceB().getPosition().getX()-currentPosition.getX()==-1)) {
+                    validPostitions.add(new Position(board.getEnPassantPieceB().getPosition().getX(),
+                            board.getEnPassantPieceB().getPosition().getY()+1));
+                }
                 break;
             case Black:
                 validPostitions = moveBlack(board);
+                if (board.getEnPassantPieceW() != null &&
+                        board.getEnPassantPieceW().getPosition().getY() == currentPosition.getY() &&
+                        (board.getEnPassantPieceW().getPosition().getX()-currentPosition.getX()==1 ||
+                                board.getEnPassantPieceW().getPosition().getX()-currentPosition.getX()==-1)) {
+                    validPostitions.add(new Position(board.getEnPassantPieceW().getPosition().getX(),
+                            board.getEnPassantPieceW().getPosition().getY()-1));
+                }
                 break;
             default:
                 break;
