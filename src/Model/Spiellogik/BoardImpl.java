@@ -178,6 +178,15 @@ public class BoardImpl implements iBoard {
                     }
                 }
             }
+
+            if(piece.getType() == Typ.KOENIG){
+                Koenig koenig = (Koenig)piece;
+                koenig.setMoved();
+            } else if(piece.getType() == Typ.TURM){
+                Turm turm = (Turm)piece;
+                turm.setMoved();
+            }
+
             piece.setPosition(x, y);
             changeTurns();
             return;

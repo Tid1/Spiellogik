@@ -69,4 +69,8 @@ public class Turm implements iPiece{
     public boolean hasMoved() {
         return hasMoved;
     }
+
+    public void setMoved(){
+        this.hasMoved = true;
+    }
 }
