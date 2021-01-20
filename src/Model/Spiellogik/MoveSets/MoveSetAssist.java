@@ -231,7 +231,7 @@ public class MoveSetAssist {
                         }
                         break;
                 }
-                if (tempPiece != null && tempPiece.getType() == Typ.KOENIG) {
+                if (tempPiece != null && (tempPiece.getType() != Typ.KOENIG && tempPiece.getColor() != color)) {
                     positionBooleanArray[i] = false;
                     if (tempPiece.getColor()!=color) {
                         if (j==1) {
